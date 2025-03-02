@@ -1,0 +1,84 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "repScore",
+						"type": "uint256"
+					}
+				],
+				"name": "depositCalculator",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "depAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "requestDeposit",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": "Lock"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": {
+			"keccak256": "0xb86a9908f5a8a030a0a641f36797105c914b0fb164b5f548cc4dc6972a3a38be",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://691202837084f45965eea9b1f85b276db08c1394354fa1d8e2ebb4fb4badb183",
+				"dweb:/ipfs/Qmb5A2eRzpSdtFaPWLTwbGBVc8aHamMWwJihq2q44DgLzQ"
+			]
+		}
+	},
+	"version": 1
+}
