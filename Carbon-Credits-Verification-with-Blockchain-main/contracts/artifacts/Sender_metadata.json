@@ -32,7 +32,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": "Sender"
+			"Carbon-Credits-Verification-with-Blockchain-main/contracts/test.sol": "Sender"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -46,12 +46,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": {
-			"keccak256": "0xbadc6a6d10c0e8f4d46ddb806a35b9f3265076dcfd3ac120b3a2cbf9af21442b",
+		"Carbon-Credits-Verification-with-Blockchain-main/contracts/test.sol": {
+			"keccak256": "0x439d6af49fb3a5922b98e1aabfb29e24fecf303fb9d0d4268cbb3da5e2920236",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://98c2957fd0a3566588a2b5d26a4ed0c0817a4444a519de92a293c00809686fe7",
-				"dweb:/ipfs/QmfXaJX5o2s19daKVSzg4uHBhPS7H53yKG8rUsw5tYXYgj"
+				"bzz-raw://f53ef54ae2e99efb2b5b8ddb85baf9cfe8f99d33fa235cc1614251cf9083711b",
+				"dweb:/ipfs/QmecaUDSu6aXztGQoaqki83gNS759xTR3aet572kR4WJJG"
 			]
 		}
 	},
