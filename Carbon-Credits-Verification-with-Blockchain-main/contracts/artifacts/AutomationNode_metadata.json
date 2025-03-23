@@ -1,0 +1,103 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "contract LinkTokenInterface",
+						"name": "link",
+						"type": "address"
+					},
+					{
+						"internalType": "contract AutomationRegistrarInterface",
+						"name": "registrar",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "i_link",
+				"outputs": [
+					{
+						"internalType": "contract LinkTokenInterface",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "i_registrar",
+				"outputs": [
+					{
+						"internalType": "contract AutomationRegistrarInterface",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "registerAndPredictID",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Carbon-Credits-Verification-with-Blockchain-main/contracts/automationNode.sol": "AutomationNode"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@chainlink/contracts/src/v0.8/shared/interfaces/LinkTokenInterface.sol": {
+			"keccak256": "0xd3643595b0a46f577fff806736cbe4e3f81707c93fb1693a8a7960466e5cd321",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f7cccfc386f9cdb9037db66dd85a31347af8b733f39a18cbc12dbf1f5812d02d",
+				"dweb:/ipfs/QmcE3Hef9XLSbthiS3DKQFF1ZpYDZsPLHwW1DY5iUGAfcd"
+			]
+		},
+		"Carbon-Credits-Verification-with-Blockchain-main/contracts/automationNode.sol": {
+			"keccak256": "0x1b2e960a544dcc3f1b356982077b79159cbc7cfddd4b915ca5f4eff4d8e8ff2c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://70557cc7990a91e88ea3faf0c2fcb8f9e6a236ed552de717f0dba3984a5e9d5e",
+				"dweb:/ipfs/QmS6jRtK4i5r7uFTZX8CorEzYr9ZTiCTcYGLLv2uS7fu8N"
+			]
+		}
+	},
+	"version": 1
+}

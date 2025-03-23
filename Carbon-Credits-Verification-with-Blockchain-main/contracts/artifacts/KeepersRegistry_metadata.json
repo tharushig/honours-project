@@ -1,0 +1,75 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "getRegistrar",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Carbon-Credits-Verification-with-Blockchain-main/contracts/monitoring-alert-contract.sol": "KeepersRegistry"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol": {
+			"keccak256": "0x67076747c6f66d8d43472a56e72879c350056bff82e069addaf9064922863340",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b738dba680a6fbc4afc85819743f13f5b7f4790ec8634c9894e1160327b11b6e",
+				"dweb:/ipfs/Qmbv3euvQppeBm2g61khcJSRMZWi78xUWzbnjKAvDBnka4"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol": {
+			"keccak256": "0xac76a31c20c6d66196247376d113a0f19229569ab8c123989649d50be3333e0a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5400532a5132536ba3d1172604291298f1595f15d7a7f66c95bf89a5823b80be",
+				"dweb:/ipfs/QmTvDMmt73kZEGjD9WVgpaN8xLsgGpoXmr2yVUQoQuv8GW"
+			]
+		},
+		"Carbon-Credits-Verification-with-Blockchain-main/contracts/monitoring-alert-contract.sol": {
+			"keccak256": "0x8a21cb02974175dd28c887bac927d92603b11225b01b58bd2a99276de4d3218c",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://2c816d0f8579710fa6f801a6ac2c3848c4d7b60b8c13068c46974939f616c057",
+				"dweb:/ipfs/QmUC2kJPvGvVkDs6ptptv4krZq4NzpGeaqeJVgdY4wvkfK"
+			]
+		}
+	},
+	"version": 1
+}

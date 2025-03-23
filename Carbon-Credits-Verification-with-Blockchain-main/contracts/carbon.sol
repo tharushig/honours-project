@@ -78,7 +78,14 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         emit Data("Done");
         //use req._add to get rid of this problem
         // req._add("get", string.concat("127.0.0.1:5000/api/data", Strings.toString(projectId)));
-        req._add("get", "http://127.0.0.1:5000/data");
+        req._add(
+            "get",
+            "http://127.0.0.1:5000/data"
+            // "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD"
+        );
+        // req._add("path", "RAW,ETH,USD,VOLUME24HOUR");
+        int256 timesAmount = 10 ** 18;
+        req._addInt("times", timesAmount);
         emit Data("Made the get request");
         return _sendChainlinkRequest(req, fee);
     }

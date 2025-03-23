@@ -1,0 +1,128 @@
+{
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"goerli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"data": {
+		"bytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"deployedBytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"immutableReferences": {},
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"gasEstimates": null,
+		"methodIdentifiers": {
+			"registerUpkeep((string,bytes,address,uint32,address,uint8,bytes,bytes,bytes,uint96))": "3f678e11"
+		}
+	},
+	"abi": [
+		{
+			"inputs": [
+				{
+					"components": [
+						{
+							"internalType": "string",
+							"name": "name",
+							"type": "string"
+						},
+						{
+							"internalType": "bytes",
+							"name": "encryptedEmail",
+							"type": "bytes"
+						},
+						{
+							"internalType": "address",
+							"name": "upkeepContract",
+							"type": "address"
+						},
+						{
+							"internalType": "uint32",
+							"name": "gasLimit",
+							"type": "uint32"
+						},
+						{
+							"internalType": "address",
+							"name": "adminAddress",
+							"type": "address"
+						},
+						{
+							"internalType": "uint8",
+							"name": "triggerType",
+							"type": "uint8"
+						},
+						{
+							"internalType": "bytes",
+							"name": "checkData",
+							"type": "bytes"
+						},
+						{
+							"internalType": "bytes",
+							"name": "triggerConfig",
+							"type": "bytes"
+						},
+						{
+							"internalType": "bytes",
+							"name": "offchainConfig",
+							"type": "bytes"
+						},
+						{
+							"internalType": "uint96",
+							"name": "amount",
+							"type": "uint96"
+						}
+					],
+					"internalType": "struct RegistrationParams",
+					"name": "requestParams",
+					"type": "tuple"
+				}
+			],
+			"name": "registerUpkeep",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		}
+	]
+}

@@ -1,0 +1,126 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "bytes",
+								"name": "encryptedEmail",
+								"type": "bytes"
+							},
+							{
+								"internalType": "address",
+								"name": "upkeepContract",
+								"type": "address"
+							},
+							{
+								"internalType": "uint32",
+								"name": "gasLimit",
+								"type": "uint32"
+							},
+							{
+								"internalType": "address",
+								"name": "adminAddress",
+								"type": "address"
+							},
+							{
+								"internalType": "uint8",
+								"name": "triggerType",
+								"type": "uint8"
+							},
+							{
+								"internalType": "bytes",
+								"name": "checkData",
+								"type": "bytes"
+							},
+							{
+								"internalType": "bytes",
+								"name": "triggerConfig",
+								"type": "bytes"
+							},
+							{
+								"internalType": "bytes",
+								"name": "offchainConfig",
+								"type": "bytes"
+							},
+							{
+								"internalType": "uint96",
+								"name": "amount",
+								"type": "uint96"
+							}
+						],
+						"internalType": "struct RegistrationParams",
+						"name": "requestParams",
+						"type": "tuple"
+					}
+				],
+				"name": "registerUpkeep",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "string name = \"test upkeep\"; bytes encryptedEmail = 0x; address upkeepContract = 0x...; uint32 gasLimit = 500000; address adminAddress = 0x....; uint8 triggerType = 0; bytes checkData = 0x; bytes triggerConfig = 0x; bytes offchainConfig = 0x; uint96 amount = 1000000000000000000;",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Carbon-Credits-Verification-with-Blockchain-main/contracts/automationNode.sol": "AutomationRegistrarInterface"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@chainlink/contracts/src/v0.8/shared/interfaces/LinkTokenInterface.sol": {
+			"keccak256": "0xd3643595b0a46f577fff806736cbe4e3f81707c93fb1693a8a7960466e5cd321",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f7cccfc386f9cdb9037db66dd85a31347af8b733f39a18cbc12dbf1f5812d02d",
+				"dweb:/ipfs/QmcE3Hef9XLSbthiS3DKQFF1ZpYDZsPLHwW1DY5iUGAfcd"
+			]
+		},
+		"Carbon-Credits-Verification-with-Blockchain-main/contracts/automationNode.sol": {
+			"keccak256": "0x1b2e960a544dcc3f1b356982077b79159cbc7cfddd4b915ca5f4eff4d8e8ff2c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://70557cc7990a91e88ea3faf0c2fcb8f9e6a236ed552de717f0dba3984a5e9d5e",
+				"dweb:/ipfs/QmS6jRtK4i5r7uFTZX8CorEzYr9ZTiCTcYGLLv2uS7fu8N"
+			]
+		}
+	},
+	"version": 1
+}
