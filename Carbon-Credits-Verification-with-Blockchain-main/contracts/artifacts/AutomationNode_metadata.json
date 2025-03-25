@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.19+commit.7dd6d404"
+		"version": "0.8.29+commit.ab55807c"
 	},
 	"language": "Solidity",
 	"output": {
@@ -70,7 +70,7 @@
 		"compilationTarget": {
 			"Carbon-Credits-Verification-with-Blockchain-main/contracts/automationNode.sol": "AutomationNode"
 		},
-		"evmVersion": "paris",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -91,11 +91,11 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/automationNode.sol": {
-			"keccak256": "0x1b2e960a544dcc3f1b356982077b79159cbc7cfddd4b915ca5f4eff4d8e8ff2c",
+			"keccak256": "0xfa2ec142c86eef52d6eacf8016100fa930a76b0971646a554f786c5740a6d195",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://70557cc7990a91e88ea3faf0c2fcb8f9e6a236ed552de717f0dba3984a5e9d5e",
-				"dweb:/ipfs/QmS6jRtK4i5r7uFTZX8CorEzYr9ZTiCTcYGLLv2uS7fu8N"
+				"bzz-raw://f5e05fdb1d8f9ce7c24fe731ec7b42ca7e6f223ef62cae8a2ebd67882eb46432",
+				"dweb:/ipfs/Qmf8m3YEej5k6Z9bguvqVEzpTr5SK49g6sUgfW78SDbjzt"
 			]
 		}
 	},

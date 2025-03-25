@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.9.0;
+pragma solidity ^0.8.20;
 
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol";
@@ -61,32 +61,10 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         fee = (1 * LINK_DIVISIBILITY) / 10;
     }
 
-    function calculateDeposit(uint256 _repScore) public pure returns(uint,uint) {
-        //Let's say fee is $2000
-        // Let's make the deposit $1000 (prop deposit + verra deposit)
-        // We can say that the total deposit = verra dep + proponent dep + fee paid by prop
-        uint propDep = 1000 / (_repScore*5);
-        uint verrDep = 1000 - propDep;
-        return (propDep,verrDep);
-    }
-
-    event Data(string);
-
     function requestData(uint projectId) public returns (bytes32 requestId) {
-        emit Data("Executing function");
         Chainlink.Request memory req = _buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
-        emit Data("Done");
-        //use req._add to get rid of this problem
-        // req._add("get", string.concat("127.0.0.1:5000/api/data", Strings.toString(projectId)));
-        req._add(
-            "get",
-            "http://127.0.0.1:5000/data"
-            // "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD"
-        );
-        // req._add("path", "RAW,ETH,USD,VOLUME24HOUR");
-        int256 timesAmount = 10 ** 18;
-        req._addInt("times", timesAmount);
-        emit Data("Made the get request");
+        req._add("get", string.concat("127.0.0.1:5000/api/data", Strings.toString(projectId)));
+
         return _sendChainlinkRequest(req, fee);
     }
 
