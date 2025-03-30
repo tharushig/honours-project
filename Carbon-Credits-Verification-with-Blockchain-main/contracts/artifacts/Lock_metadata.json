@@ -10,12 +10,31 @@
 				"inputs": [
 					{
 						"indexed": false,
-						"internalType": "uint256",
+						"internalType": "string",
 						"name": "",
-						"type": "uint256"
+						"type": "string"
 					}
 				],
-				"name": "Bal",
+				"name": "Balance",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"name": "CheckAddr",
 				"type": "event"
 			},
 			{
@@ -83,6 +102,13 @@
 					}
 				],
 				"name": "checkRepScore",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "deploy",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -196,9 +222,31 @@
 						"type": "tuple"
 					},
 					{
-						"internalType": "address payable",
+						"components": [
+							{
+								"internalType": "address payable",
+								"name": "propAddr",
+								"type": "address"
+							},
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "repScore",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "balance",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Lock.Proponents",
 						"name": "prop",
-						"type": "address"
+						"type": "tuple"
 					},
 					{
 						"internalType": "uint256",
@@ -208,165 +256,7 @@
 				],
 				"name": "distributePay",
 				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "projectId",
-						"type": "uint256"
-					}
-				],
-				"name": "getData",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "addr",
-						"type": "address"
-					}
-				],
-				"name": "getProponent",
-				"outputs": [
-					{
-						"components": [
-							{
-								"internalType": "address payable",
-								"name": "propAddr",
-								"type": "address"
-							},
-							{
-								"internalType": "string",
-								"name": "name",
-								"type": "string"
-							},
-							{
-								"internalType": "uint256",
-								"name": "repScore",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "balance",
-								"type": "uint256"
-							}
-						],
-						"internalType": "struct Lock.Proponents",
-						"name": "",
-						"type": "tuple"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "string",
-						"name": "_name",
-						"type": "string"
-					}
-				],
-				"name": "newProp",
-				"outputs": [
-					{
-						"components": [
-							{
-								"internalType": "address payable",
-								"name": "propAddr",
-								"type": "address"
-							},
-							{
-								"internalType": "string",
-								"name": "name",
-								"type": "string"
-							},
-							{
-								"internalType": "uint256",
-								"name": "repScore",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "balance",
-								"type": "uint256"
-							}
-						],
-						"internalType": "struct Lock.Proponents",
-						"name": "",
-						"type": "tuple"
-					}
-				],
 				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "project",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "projectId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address payable",
-						"name": "proponent",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "projectDocs",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "startDate",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "creditingPeriod",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "location",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "removalGHG",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "projectType",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "methodology",
-						"type": "string"
-					},
-					{
-						"internalType": "enum Lock.projectState",
-						"name": "proState",
-						"type": "uint8"
-					},
-					{
-						"internalType": "bool",
-						"name": "issueCredit",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -624,11 +514,11 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": {
-			"keccak256": "0x5bbd317b8f2311f3139d39bc3c0f3a75e81cd0d60475e441d95701c007fdf371",
+			"keccak256": "0x7c98ee6387d100aeba75f4442507cbc5a25e49507e99cbea5b974fb615a6b967",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://bb190c4b55cd85e471cb32383192d0acd38c3469b8b40d45ebd3f321285501ad",
-				"dweb:/ipfs/QmTvxzqzdgh6duh7ya7pdG2f1uBq3RGXYhnamXm8NtvKgB"
+				"bzz-raw://54216180e30d34a3815de52dc0f6a430c4ba8eba10a3d79834754661c36977b4",
+				"dweb:/ipfs/Qmeq565CakYb5qDPbX98fsFGGU5fTe449hLZ6mcKwzcAGK"
 			]
 		}
 	},

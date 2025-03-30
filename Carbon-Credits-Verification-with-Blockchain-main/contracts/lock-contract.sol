@@ -4,6 +4,13 @@ pragma solidity ^0.8.20;
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol";
 
+
+// Perhaps the lock contract can be triggered when the proponent submits the project?
+// When should the lock contract actually release the pay? Is it when the project passes verification?
+// If going by the sequence diagram, then the should be after the verification
+// At the moment it is triggered by the balance being enough
+
+
 contract APIConsumer is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
 
@@ -20,16 +27,8 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         fee = (1 * LINK_DIVISIBILITY) / 10;
     }
 
-    function calculateDeposit(uint256 _repScore) public pure returns(uint,uint) {
-        //Let's say fee is $2000
-        // Let's make the deposit $1000 (prop deposit + verra deposit)
-        // We can say that the total deposit = verra dep + proponent dep + fee paid by prop
-        uint propDep = 1000 / (_repScore*5);
-        uint verrDep = 1000 - propDep;
-        return (propDep,verrDep);
-    }
-
     event Data(string);
+    event Result(string, uint);
 
     function requestData(uint projectId) public returns (bytes32 requestId) {
         Chainlink.Request memory req = _buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
@@ -38,7 +37,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
             "https://0853-14-200-75-54.ngrok-free.app/data"
         );
         req._add("path", "num");
-        int256 timesAmount = 10 ** 18;
+        int256 timesAmount = 1;
         req._addInt("times", timesAmount);
         emit Data("Made the get request");
         return _sendChainlinkRequest(req, fee);
@@ -53,10 +52,19 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         LinkTokenInterface link = LinkTokenInterface(_chainlinkTokenAddress());
         require(link.transfer(msg.sender, link.balanceOf(address(this))),"Unable to transfer");
     }
+
+    function compare() public {
+        uint data1 = uint(requestData(1));
+        uint vol1 = volume;
+        uint data2 = uint(requestData(1));
+        uint vol2 = volume;
+        emit Result("vol1", vol1);
+        emit Result("vol2",vol2);
+    }
 }
 
 contract Lock {
-    APIConsumer public apiConsumer;
+    // APIConsumer public apiConsumer;
     // Struct to represent projects
     struct Project {
         uint projectId;
@@ -74,8 +82,9 @@ contract Lock {
         bool issueCredit;
     }
 
-    Project public project;
-    // APIConsumer public apiConsumer;
+    // Project public project;
+    APIConsumer public apiConsumer;
+
 
     enum projectState {SUBMITTED, VERIFICATION, VALIDATION, APPROVED, REJECTED}
 
@@ -86,7 +95,6 @@ contract Lock {
         string reason;
     }
 
-
     struct Proponents {
         address payable propAddr;
         string name;
@@ -94,49 +102,43 @@ contract Lock {
         uint balance;
     }
 
-    event Deposit(string, uint amount);
-    event Bal(uint);
-
     mapping (address => Proponents) public proponents;
     Response[] public validators;
     Response[] public verifiers;
 
-    function getData(uint projectId) public {
-        // uint data = uint(apiConsumer.requestData(projectId));
-        // emit Bal(data);
-    }
+    event Deposit(string, uint amount);
+    event Balance(string);
+    event CheckAddr(address, string);
 
-    function newProp (string memory _name)  public payable  returns (Proponents memory) {
-        Proponents storage pr = proponents[msg.sender];
-        pr.name = _name;
-        pr.repScore = 10;
-        pr.balance = msg.value;
-        return pr;
+    function deploy() public {
+        apiConsumer = new APIConsumer();
     }
-
-    function getProponent(address addr) public view returns (Proponents memory) {
-        return proponents[addr];
-    }
-
     //calculates the deposit based off repScore
     function calculateDeposit(uint256 _repScore) public returns(uint,uint) {
         //Let's say fee is $2000
         // Let's make the deposit $1000 (prop deposit + verra deposit)
-        // We can say that the total deposit = verra dep + proponent dep + fee paid by prop
         uint propDep = 1000 / (_repScore*5);
         uint verrDep = 1000 - propDep;
-        emit Deposit("The proponent has a deposit to pay of: ", propDep);
+        emit Deposit("The proponent has to pay a total of: ", propDep+1000);
+        emit Deposit("msg.sender Balance", msg.sender.balance);
         return (propDep,verrDep);
     }
-
     //Allows the contract recieve payments
     // Has a requirement of having both parties pay their deposit and the fee
     receive() external payable { 
-        // require(address(this).balance == 3000, "Not paid");
-        uint dataBefore = uint(apiConsumer.requestData(1));
-        Response memory resp = Response({verifier : payable(msg.sender), response:true, reason : ""});
-        validators.push(resp);
-        verifiers.push(resp);
+        uint data = uint(apiConsumer.requestData(1));
+        // uint dataBefore = apiConsumer.volume();
+        // uint dataBefore = 1;
+        emit CheckAddr(msg.sender, "Sender of message");
+        Response memory resp1 = Response({verifier : payable (0x5B38Da6a701c568545dCfcB03FcB875f56beddC4), response:true, reason : ""});
+        validators.push(resp1);
+        verifiers.push(resp1);
+        Response memory resp2 = Response({verifier : payable (0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2), response:true, reason : ""});
+        validators.push(resp2);
+        verifiers.push(resp2);
+        Response memory resp3 = Response({verifier : payable (0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db), response:true, reason : ""});
+        validators.push(resp3);
+        verifiers.push(resp3);
         Project memory p = Project ({
             projectId : 1234567890 , // uint projectId;
             proponent : payable(msg.sender),   //address payable proponent;
@@ -149,40 +151,63 @@ contract Lock {
             methodology:"",         //string memory
             validateResponse: validators,
             verifyResponse: verifiers,
-            proState: projectState.SUBMITTED, //projectState proState;
+            proState: projectState.APPROVED, //projectState proState;
             issueCredit: true
         });
+        Proponents memory prop = Proponents({
+            propAddr: payable(msg.sender),
+            name: "Sam",
+            repScore: 10,
+            balance: 10000000000000000
+        });
+        emit Deposit(prop.name, prop.balance);
 
-        distributePay(p, p.proponent, dataBefore);
+        //The project should also be out of validation/verification
+        //Take a look into that one later
+        if (address(this).balance >= 4) {
+            uint dataBefore = apiConsumer.volume();
+            uint req = uint(apiConsumer.requestData(1));
+            distributePay(p, prop, dataBefore);
+        }
+        else {
+            emit Balance("Didn't deposit enough");
+        }
     }
-    
+
 
     //releases deposit based on performance
-    function distributePay(Project memory proj, address payable prop, uint dataBefore) public {
-        (uint depProp, uint depVerr) = calculateDeposit(proponents[prop].repScore);
-        uint dataAfter = uint(apiConsumer.requestData(1));
+    function distributePay(Project memory proj, Proponents memory prop, uint dataBefore) public payable {
+        (uint depProp, uint depVerr) = calculateDeposit(prop.repScore);
+        // uint dataAfter = 1;
+        emit Deposit("requested the data successfully", 1);
         if (proj.proState == projectState.APPROVED) {
+            emit Deposit("into approved", 1);
             // paying the proponent
-            returnDeposit(proponents[prop].propAddr, depProp);
+            returnDeposit(payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), 1);
 
             //adjusting the reputation score
-            proponents[prop].repScore += 1;
+            prop.repScore += 1;
 
             //check that the verifiers have done their job by using oracles
+            uint dataAfter = apiConsumer.volume();
+            emit Deposit("dataBefore", dataBefore);
+            emit Deposit("dataAfter", dataAfter);
             if (dataBefore == dataAfter) {
                 //paying the verifiers
-                returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
+                returnDeposit(payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), 1);
+                emit Balance("Everything works");
+                // returnDeposit(proj.verifyResponse[0].verifier, 1);
+                // returnDeposit(proj.verifyResponse[1].verifier, 1);
+                // returnDeposit(proj.verifyResponse[2].verifier, 1);
 
-                //paying the validators
-                returnDeposit(proj.validateResponse[0].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.validateResponse[1].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.validateResponse[2].verifier, (depVerr+2000)/3);
+                // //paying the validators
+                // returnDeposit(proj.validateResponse[0].verifier, 1);
+                // returnDeposit(proj.validateResponse[1].verifier, 1);
+                // returnDeposit(proj.validateResponse[2].verifier, 1);
             }
         }
         else if (proj.proState == projectState.REJECTED) {
-
+            uint dataAfter = apiConsumer.volume();
             //check that the verifiers have done their job by using oracles
             if (dataBefore == dataAfter) {
                 //paying the verifiers
@@ -196,12 +221,15 @@ contract Lock {
                 returnDeposit(proj.validateResponse[2].verifier, (depVerr+2000)/3);
             }
             // adjusting the reputation score
-            proponents[prop].repScore -= 1;
+            prop.repScore -= 1;
         }
 
         //ensuring repScore remains valid
-        checkRepScore(prop);
-        
+        checkRepScore(prop.propAddr);
+        //burn address for the rest of the balance
+        returnDeposit(payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), address(this).balance);
+        emit Deposit("repScore", prop.balance);
+        emit Deposit("msg.sender Balance", msg.sender.balance);
     }
 
     //handles payment transfers
@@ -211,7 +239,7 @@ contract Lock {
     }
 
     //checks and adjust if repScore is out of bounds
-    function checkRepScore (address payable prop) public {
+    function checkRepScore (address payable prop) public payable {
         if (proponents[prop].repScore == 0) {
             proponents[prop].repScore += 1;
         }
@@ -220,3 +248,55 @@ contract Lock {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+contract Sender {
+    event LogMessage(string, address);
+    function sendEther(address payable receiverAddress) public payable {
+        // Sending Ether to the receiver contract
+        //Need to do the same for verra but not sure how
+        (bool success, ) = receiverAddress.call{value: msg.value}("");
+        require(success, "Transfer failed.");
+    }
+
+    receive() external payable {
+        testReturn();
+    }
+
+    function testReturn () public {
+        emit LogMessage("Sender received money back", address(this));
+    }
+}
+
+contract RecievePayment {
+    event LogMessage(string message, address addr);
+
+    receive() external payable {
+        testReturn();
+    }
+
+    function testReturn () public {
+        emit LogMessage("Test return is executed", address(this));
+    }
+
+    
+}
+
