@@ -52,15 +52,6 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         LinkTokenInterface link = LinkTokenInterface(_chainlinkTokenAddress());
         require(link.transfer(msg.sender, link.balanceOf(address(this))),"Unable to transfer");
     }
-
-    function compare() public {
-        uint data1 = uint(requestData(1));
-        uint vol1 = volume;
-        uint data2 = uint(requestData(1));
-        uint vol2 = volume;
-        emit Result("vol1", vol1);
-        emit Result("vol2",vol2);
-    }
 }
 
 contract Lock {
@@ -84,7 +75,7 @@ contract Lock {
 
     // Project public project;
     APIConsumer public apiConsumer;
-
+    uint public dataBefore;
 
     enum projectState {SUBMITTED, VERIFICATION, VALIDATION, APPROVED, REJECTED}
 
@@ -102,9 +93,13 @@ contract Lock {
         uint balance;
     }
 
-    mapping (address => Proponents) public proponents;
     Response[] public validators;
     Response[] public verifiers;
+    // Proponents[] public proponents;
+    // Project[] public projects;
+
+    mapping (address => Project) public projects;
+    mapping (address => Proponents) public proponents;
 
     event Deposit(string, uint amount);
     event Balance(string);
@@ -123,13 +118,9 @@ contract Lock {
         emit Deposit("msg.sender Balance", msg.sender.balance);
         return (propDep,verrDep);
     }
-    //Allows the contract recieve payments
-    // Has a requirement of having both parties pay their deposit and the fee
-    receive() external payable { 
-        uint data = uint(apiConsumer.requestData(1));
-        // uint dataBefore = apiConsumer.volume();
-        // uint dataBefore = 1;
-        emit CheckAddr(msg.sender, "Sender of message");
+
+    function newProject() public {
+        require(address(apiConsumer) != 0x0000000000000000000000000000000000000000, "Deploy APIConsumer first!");
         Response memory resp1 = Response({verifier : payable (0x5B38Da6a701c568545dCfcB03FcB875f56beddC4), response:true, reason : ""});
         validators.push(resp1);
         verifiers.push(resp1);
@@ -139,44 +130,54 @@ contract Lock {
         Response memory resp3 = Response({verifier : payable (0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db), response:true, reason : ""});
         validators.push(resp3);
         verifiers.push(resp3);
-        Project memory p = Project ({
-            projectId : 1234567890 , // uint projectId;
-            proponent : payable(msg.sender),   //address payable proponent;
-            projectDocs: "",          //string memory projectDocs;
-            startDate : 1,           //uint startDate;
-            creditingPeriod: 5*24*60*60 ,// uint creditingPeriod;
-            location:"",             // string memory location;
-            removalGHG: 8739.90 * (1 ether),    //uint removalGHG;
-            projectType : "",         //string memory projectType;
-            methodology:"",         //string memory
-            validateResponse: validators,
-            verifyResponse: verifiers,
-            proState: projectState.APPROVED, //projectState proState;
-            issueCredit: true
-        });
-        Proponents memory prop = Proponents({
-            propAddr: payable(msg.sender),
-            name: "Sam",
-            repScore: 10,
-            balance: 10000000000000000
-        });
-        emit Deposit(prop.name, prop.balance);
+        Project storage p = projects[msg.sender];
+        p.projectId=1234567890;
+        p.proponent=payable(msg.sender);
+        p.projectDocs="";
+        p.startDate=1;
+        p.creditingPeriod=5*24*60*60;
+        p.location="";
+        p.removalGHG=8739.90 * (1 ether);
+        p.projectType="";
+        p.methodology="";
+        p.validateResponse=validators;
+        p.verifyResponse=verifiers;
+        p.proState=projectState.APPROVED;
+        p.issueCredit=true;
+        uint req = uint(apiConsumer.requestData(1));
+    }
 
-        //The project should also be out of validation/verification
-        //Take a look into that one later
-        if (address(this).balance >= 4) {
-            uint dataBefore = apiConsumer.volume();
-            uint req = uint(apiConsumer.requestData(1));
-            distributePay(p, prop, dataBefore);
-        }
-        else {
-            emit Balance("Didn't deposit enough");
+    function addProponent() public returns (uint) {
+        Proponents storage pr = proponents[msg.sender];
+        pr.name = "Sam";
+        pr.propAddr = payable(msg.sender);
+        pr.repScore = 10;
+        pr.balance = 1000000;
+        return pr.repScore;
+    }
+
+    // simulates the project changing states
+    function changeProjectState(projectState _proState) public {
+        projects[msg.sender].proState = _proState;
+        if (_proState == projectState.APPROVED || _proState == projectState.REJECTED) {
+            if (address(this).balance >= 4) {
+                dataBefore = apiConsumer.volume();
+                uint req = uint(apiConsumer.requestData(1));
+                distributePay(projects[msg.sender], proponents[msg.sender]);
+            }
+            else {
+                emit Balance("Not Enough Deposited");
+            }
         }
     }
 
+    //Allows the contract recieve payments
+    receive() external payable { 
+        
+    }
 
     //releases deposit based on performance
-    function distributePay(Project memory proj, Proponents memory prop, uint dataBefore) public payable {
+    function distributePay(Project memory proj, Proponents memory prop) public payable {
         (uint depProp, uint depVerr) = calculateDeposit(prop.repScore);
         // uint dataAfter = 1;
         emit Deposit("requested the data successfully", 1);

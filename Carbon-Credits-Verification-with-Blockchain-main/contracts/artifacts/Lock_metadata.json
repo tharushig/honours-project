@@ -58,6 +58,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "addProponent",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "apiConsumer",
 				"outputs": [
 					{
@@ -96,6 +109,19 @@
 			{
 				"inputs": [
 					{
+						"internalType": "enum Lock.projectState",
+						"name": "_proState",
+						"type": "uint8"
+					}
+				],
+				"name": "changeProjectState",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address payable",
 						"name": "prop",
 						"type": "address"
@@ -104,6 +130,19 @@
 				"name": "checkRepScore",
 				"outputs": [],
 				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "dataBefore",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -247,16 +286,87 @@
 						"internalType": "struct Lock.Proponents",
 						"name": "prop",
 						"type": "tuple"
-					},
-					{
-						"internalType": "uint256",
-						"name": "dataBefore",
-						"type": "uint256"
 					}
 				],
 				"name": "distributePay",
 				"outputs": [],
 				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "newProject",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "projects",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address payable",
+						"name": "proponent",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "projectDocs",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startDate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "creditingPeriod",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "location",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "removalGHG",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "projectType",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "methodology",
+						"type": "string"
+					},
+					{
+						"internalType": "enum Lock.projectState",
+						"name": "proState",
+						"type": "uint8"
+					},
+					{
+						"internalType": "bool",
+						"name": "issueCredit",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -514,11 +624,11 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": {
-			"keccak256": "0x7c98ee6387d100aeba75f4442507cbc5a25e49507e99cbea5b974fb615a6b967",
+			"keccak256": "0x33872ecf17578b75b03fe874eab8d1599227fb16e14be7cb49ec6a2b4cdaa139",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://54216180e30d34a3815de52dc0f6a430c4ba8eba10a3d79834754661c36977b4",
-				"dweb:/ipfs/Qmeq565CakYb5qDPbX98fsFGGU5fTe449hLZ6mcKwzcAGK"
+				"bzz-raw://afb80636a56e551f15dbd50b0c1dbce894282ff9638ab8aeaf4fa166d4d75822",
+				"dweb:/ipfs/QmRTax6tx4ob6MwfWZVbBNjs64ut3xVZV2tJdw4Q3SnXtx"
 			]
 		}
 	},
