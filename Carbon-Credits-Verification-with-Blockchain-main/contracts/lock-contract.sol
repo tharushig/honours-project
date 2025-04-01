@@ -39,7 +39,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         req._add("path", "num");
         int256 timesAmount = 1;
         req._addInt("times", timesAmount);
-        emit Data("Made the get request");
+        emit Result("Made the get request", projectId);
         return _sendChainlinkRequest(req, fee);
     }
 
@@ -108,19 +108,39 @@ contract Lock {
     function deploy() public {
         apiConsumer = new APIConsumer();
     }
+
+    function getProjectState(uint val) pure  public  returns (projectState) {
+        if (val == 4) {
+            return projectState.APPROVED;
+        }
+        else if (val == 5) {
+            return projectState.REJECTED;
+        }
+        else if (val == 3) {
+            return projectState.VALIDATION;
+        }
+        else if (val == 2) {
+            return projectState.VERIFICATION;
+        }
+        else {
+            return projectState.SUBMITTED;
+        }
+
+    }
+
     //calculates the deposit based off repScore
     function calculateDeposit(uint256 _repScore) public returns(uint,uint) {
         //Let's say fee is $2000
         // Let's make the deposit $1000 (prop deposit + verra deposit)
         uint propDep = 1000 / (_repScore*5);
         uint verrDep = 1000 - propDep;
-        emit Deposit("The proponent has to pay a total of: ", propDep+1000);
-        emit Deposit("msg.sender Balance", msg.sender.balance);
+        emit Deposit("The proponent has to pay a total of: ", propDep+2000);
+        emit Deposit("Verra has to pay a total of:", verrDep);
         return (propDep,verrDep);
     }
 
     function newProject() public {
-        require(address(apiConsumer) != 0x0000000000000000000000000000000000000000, "Deploy APIConsumer first!");
+        require(address(apiConsumer) != address(0), "Deploy APIConsumer first!");
         Response memory resp1 = Response({verifier : payable (0x5B38Da6a701c568545dCfcB03FcB875f56beddC4), response:true, reason : ""});
         validators.push(resp1);
         verifiers.push(resp1);
@@ -132,7 +152,7 @@ contract Lock {
         verifiers.push(resp3);
         Project storage p = projects[msg.sender];
         p.projectId=1234567890;
-        p.proponent=payable(msg.sender);
+        p.proponent=payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4);
         p.projectDocs="";
         p.startDate=1;
         p.creditingPeriod=5*24*60*60;
@@ -142,7 +162,7 @@ contract Lock {
         p.methodology="";
         p.validateResponse=validators;
         p.verifyResponse=verifiers;
-        p.proState=projectState.APPROVED;
+        p.proState=projectState.VERIFICATION;
         p.issueCredit=true;
         uint req = uint(apiConsumer.requestData(1));
     }
@@ -150,7 +170,7 @@ contract Lock {
     function addProponent() public returns (uint) {
         Proponents storage pr = proponents[msg.sender];
         pr.name = "Sam";
-        pr.propAddr = payable(msg.sender);
+        pr.propAddr = payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4);
         pr.repScore = 10;
         pr.balance = 1000000;
         return pr.repScore;
@@ -172,6 +192,7 @@ contract Lock {
     }
 
     //Allows the contract recieve payments
+    //Making the assumption that everyone pays deposit at the beginning, before any verification
     receive() external payable { 
         
     }
@@ -180,35 +201,39 @@ contract Lock {
     function distributePay(Project memory proj, Proponents memory prop) public payable {
         (uint depProp, uint depVerr) = calculateDeposit(prop.repScore);
         // uint dataAfter = 1;
-        emit Deposit("requested the data successfully", 1);
+        uint dataAfter = apiConsumer.volume();
         if (proj.proState == projectState.APPROVED) {
             emit Deposit("into approved", 1);
             // paying the proponent
-            returnDeposit(payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), 1);
+            returnDeposit(payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), depProp);
+
+            returnDeposit(proj.verifyResponse[0].verifier, 1);
+            returnDeposit(proj.verifyResponse[1].verifier, 1);
+            returnDeposit(proj.verifyResponse[2].verifier, 1);
+
+            // //paying the validators
+            returnDeposit(proj.validateResponse[0].verifier, 1);
+            returnDeposit(proj.validateResponse[1].verifier, 1);
+            returnDeposit(proj.validateResponse[2].verifier, 1);
 
             //adjusting the reputation score
             prop.repScore += 1;
 
             //check that the verifiers have done their job by using oracles
-            uint dataAfter = apiConsumer.volume();
-            emit Deposit("dataBefore", dataBefore);
-            emit Deposit("dataAfter", dataAfter);
             if (dataBefore == dataAfter) {
                 //paying the verifiers
-                returnDeposit(payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), 1);
-                emit Balance("Everything works");
-                // returnDeposit(proj.verifyResponse[0].verifier, 1);
-                // returnDeposit(proj.verifyResponse[1].verifier, 1);
-                // returnDeposit(proj.verifyResponse[2].verifier, 1);
+                returnDeposit(payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), depProp);
+                returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
+                returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
+                returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
 
                 // //paying the validators
-                // returnDeposit(proj.validateResponse[0].verifier, 1);
-                // returnDeposit(proj.validateResponse[1].verifier, 1);
-                // returnDeposit(proj.validateResponse[2].verifier, 1);
+                returnDeposit(proj.validateResponse[0].verifier, (depVerr+2000)/3);
+                returnDeposit(proj.validateResponse[1].verifier, (depVerr+2000)/3);
+                returnDeposit(proj.validateResponse[2].verifier, (depVerr+2000)/3);
             }
         }
         else if (proj.proState == projectState.REJECTED) {
-            uint dataAfter = apiConsumer.volume();
             //check that the verifiers have done their job by using oracles
             if (dataBefore == dataAfter) {
                 //paying the verifiers
