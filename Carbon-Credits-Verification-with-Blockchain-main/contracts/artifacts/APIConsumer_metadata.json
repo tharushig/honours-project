@@ -111,9 +111,9 @@
 					},
 					{
 						"indexed": false,
-						"internalType": "uint256",
+						"internalType": "string",
 						"name": "volume",
-						"type": "uint256"
+						"type": "string"
 					}
 				],
 				"name": "RequestVolume",
@@ -146,6 +146,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "expectedReductions",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "bytes32",
@@ -154,13 +167,36 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "_volume",
+						"name": "_issuedCredits",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_expectedReductions",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_third",
 						"type": "uint256"
 					}
 				],
 				"name": "fulfill",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "issuedCredits",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -180,7 +216,7 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "projectId",
+						"name": "projectID",
 						"type": "uint256"
 					}
 				],
@@ -196,6 +232,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "third",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -206,19 +255,6 @@
 				"name": "transferOwnership",
 				"outputs": [],
 				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "volume",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -252,7 +288,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": "APIConsumer"
+			"Carbon-Credits-Verification-with-Blockchain-main/contracts/prove.sol": "APIConsumer"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -260,7 +296,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -378,12 +414,52 @@
 				"dweb:/ipfs/QmXjy7BmtnPeCLMaMnGGnsxDPGxohfDpYzP8PnUoh6gBGa"
 			]
 		},
-		"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": {
-			"keccak256": "0x89dd20a69f73339eba2246cede674b61585106dc5db11b0bb87248b441977535",
+		"@openzeppelin/contracts/utils/Panic.sol": {
+			"keccak256": "0xf7fe324703a64fc51702311dc51562d5cb1497734f074e4f483bfb6717572d7a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://9a6233416cbe134fa7d0645fd46269dab28b58ccd59fd75250600eee92688a2c",
-				"dweb:/ipfs/QmPUc5b5eek8sFpqpy7GJBsKGBRixLXUZqtkA3Fnke7CG2"
+				"bzz-raw://c6a5ff4f9fd8649b7ee20800b7fa387d3465bd77cf20c2d1068cd5c98e1ed57a",
+				"dweb:/ipfs/QmVSaVJf9FXFhdYEYeCEfjMVHrxDh5qL4CGkxdMWpQCrqG"
+			]
+		},
+		"@openzeppelin/contracts/utils/Strings.sol": {
+			"keccak256": "0x44f87e91783e88415bde66f1a63f6c7f0076f2d511548820407d5c95643ac56c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://13a51bc2b23827744dcf5bad10c69e72528cf015a6fe48c93632cdb2c0eb1251",
+				"dweb:/ipfs/QmZwPA47Yqgje1qtkdEFEja8ntTahMStYzKf5q3JRnaR7d"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/Math.sol": {
+			"keccak256": "0xa00be322d7db5786750ce0ac7e2f5b633ac30a5ed5fa1ced1e74acfc19acecea",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6c84e822f87cbdc4082533b626667b6928715bb2b1e8e7eb96954cebb9e38c8d",
+				"dweb:/ipfs/QmZmy9dgxLTerBAQDuuHqbL6EpgRxddqgv5KmwpXYVbKz1"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/SafeCast.sol": {
+			"keccak256": "0x195533c86d0ef72bcc06456a4f66a9b941f38eb403739b00f21fd7c1abd1ae54",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b1d578337048cad08c1c03041cca5978eff5428aa130c781b271ad9e5566e1f8",
+				"dweb:/ipfs/QmPFKL2r9CBsMwmUqqdcFPfHZB2qcs9g1HDrPxzWSxomvy"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/SignedMath.sol": {
+			"keccak256": "0xb1970fac7b64e6c09611e6691791e848d5e3fe410fa5899e7df2e0afd77a99e3",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://db5fbb3dddd8b7047465b62575d96231ba8a2774d37fb4737fbf23340fabbb03",
+				"dweb:/ipfs/QmVUSvooZKEdEdap619tcJjTLcAuH6QBdZqAzWwnAXZAWJ"
+			]
+		},
+		"Carbon-Credits-Verification-with-Blockchain-main/contracts/prove.sol": {
+			"keccak256": "0xb8aa26cec6f31e4a5a2c7550729b469ecab0d701e9dd226a24dcd1fba13bf123",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e200b7cf044783faa9ade4b6ac9482da9d14e6939f06bf5874580e091effebf3",
+				"dweb:/ipfs/QmWhcMZ9FgYWuEDLs1KR4aachAUPbUxBx9Z5wJBpszFjwN"
 			]
 		}
 	},
