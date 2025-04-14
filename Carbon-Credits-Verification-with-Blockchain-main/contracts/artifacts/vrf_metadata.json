@@ -285,11 +285,11 @@
 			]
 		},
 		"@openzeppelin/contracts/utils/math/Math.sol": {
-			"keccak256": "0xa00be322d7db5786750ce0ac7e2f5b633ac30a5ed5fa1ced1e74acfc19acecea",
+			"keccak256": "0xa04a9526c2bed40a52f05347038e4f2aa347044782323b27f9ac5315cc2c5545",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://6c84e822f87cbdc4082533b626667b6928715bb2b1e8e7eb96954cebb9e38c8d",
-				"dweb:/ipfs/QmZmy9dgxLTerBAQDuuHqbL6EpgRxddqgv5KmwpXYVbKz1"
+				"bzz-raw://8c10bc1fdaf70fc6cc8ec4e36e6e74c4c7a87fe2a0aaf128888a1952581f344c",
+				"dweb:/ipfs/QmWhMXzFYrccf9MTGc3abN2AQHVm8hVmRTQTxgSeqFX7dL"
 			]
 		},
 		"@openzeppelin/contracts/utils/math/SafeCast.sol": {
