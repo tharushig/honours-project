@@ -97,25 +97,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "data",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "bytes32",
 						"name": "_requestId",
 						"type": "bytes32"
@@ -216,6 +197,11 @@
 						"internalType": "address",
 						"name": "_oracle",
 						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "_jobId",
+						"type": "string"
 					}
 				],
 				"name": "requestEthereumPrice",
@@ -239,11 +225,7 @@
 		],
 		"devdoc": {
 			"kind": "dev",
-			"methods": {
-				"constructor": {
-					"details": "LINK address in Sepolia network: 0x779877A7B0D9E8603169DdbD7836e478b4624789Check https://docs.chain.link/docs/link-token-contracts/ for LINK address for the right network"
-				}
-			},
+			"methods": {},
 			"version": 1
 		},
 		"userdoc": {
@@ -251,9 +233,6 @@
 			"methods": {
 				"acceptOwnership()": {
 					"notice": "Allows an ownership transfer to be completed by the recipient."
-				},
-				"constructor": {
-					"notice": "Sepolia"
 				},
 				"owner()": {
 					"notice": "Get the current owner"
@@ -277,7 +256,7 @@
 		},
 		"optimizer": {
 			"enabled": true,
-			"runs": 200
+			"runs": 20
 		},
 		"remappings": []
 	},
@@ -507,11 +486,11 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/prove.sol": {
-			"keccak256": "0xc1a0d8baf0bf2b0779077f5e6866fd26045643feaca1383103647d66bd460cfb",
+			"keccak256": "0x41eb3f305d7ac18cd4909c24384d2bfe25027249d04e639a1c23e0dbb3ef49e4",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0b09d27492954a54964533c71874fbfc46627618420080e8658d852f03486f0a",
-				"dweb:/ipfs/QmX3rmgR6Jf4yvRDdSGLvhaCVbhobica2M3sWRFnqEzRQ3"
+				"bzz-raw://1ba517b5b02c5eac1ffa412d31aad6704ee4fd9b6f03f498d2d0f272f899d8a7",
+				"dweb:/ipfs/QmQfpsMXX3aRHizAvKy44bF2NuiCeKciMCvbYojywNdiDF"
 			]
 		}
 	},

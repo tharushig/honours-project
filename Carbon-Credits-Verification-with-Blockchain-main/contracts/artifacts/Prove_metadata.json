@@ -6,24 +6,45 @@
 	"output": {
 		"abi": [
 			{
+				"anonymous": false,
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "x",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "y",
-						"type": "uint256"
+						"indexed": false,
+						"internalType": "string",
+						"name": "",
+						"type": "string"
 					}
 				],
-				"name": "checkWorking",
+				"name": "Data",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"name": "HashResult",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "data",
+						"type": "bytes32"
+					}
+				],
+				"name": "bytes32ToString",
 				"outputs": [
 					{
-						"internalType": "bool",
+						"internalType": "string",
 						"name": "",
-						"type": "bool"
+						"type": "string"
 					}
 				],
 				"stateMutability": "pure",
@@ -37,14 +58,13 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "deployOperator",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "opNode",
+						"type": "address"
+					}
+				],
 				"name": "getProjDetails",
 				"outputs": [],
 				"stateMutability": "nonpayable",
@@ -52,7 +72,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "hash",
+				"name": "hashCheck",
 				"outputs": [
 					{
 						"internalType": "bool",
@@ -69,19 +89,6 @@
 				"outputs": [
 					{
 						"internalType": "contract OperatorConsumer",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "operator",
-				"outputs": [
-					{
-						"internalType": "contract Operator",
 						"name": "",
 						"type": "address"
 					}
@@ -112,7 +119,7 @@
 		},
 		"optimizer": {
 			"enabled": true,
-			"runs": 200
+			"runs": 20
 		},
 		"remappings": []
 	},
@@ -342,11 +349,11 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/prove.sol": {
-			"keccak256": "0xc1a0d8baf0bf2b0779077f5e6866fd26045643feaca1383103647d66bd460cfb",
+			"keccak256": "0x41eb3f305d7ac18cd4909c24384d2bfe25027249d04e639a1c23e0dbb3ef49e4",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0b09d27492954a54964533c71874fbfc46627618420080e8658d852f03486f0a",
-				"dweb:/ipfs/QmX3rmgR6Jf4yvRDdSGLvhaCVbhobica2M3sWRFnqEzRQ3"
+				"bzz-raw://1ba517b5b02c5eac1ffa412d31aad6704ee4fd9b6f03f498d2d0f272f899d8a7",
+				"dweb:/ipfs/QmQfpsMXX3aRHizAvKy44bF2NuiCeKciMCvbYojywNdiDF"
 			]
 		}
 	},

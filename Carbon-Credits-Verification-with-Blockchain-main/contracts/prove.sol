@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@chainlink/contracts@1.3.0/src/v0.8/ChainlinkClient.sol";
 import ".deps/npm/@chainlink/contracts@1.3.0/src/v0.8/shared/access/ConfirmedOwner.sol";
-// import "@chainlink/contracts@1.3.0/src/v0.8/shared/interfaces/LinkTokenInterface.sol";
+import "@chainlink/contracts@1.3.0/src/v0.8/shared/interfaces/LinkTokenInterface.sol";
 import {Operator} from "@chainlink/contracts@1.3.0/src/v0.8/operatorforwarder/Operator.sol";
 
 
@@ -15,35 +15,20 @@ import {Operator} from "@chainlink/contracts@1.3.0/src/v0.8/operatorforwarder/Op
 
 contract OperatorConsumer is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
-
-    // string public projectName;
-    // string public location;
-    // string public hash;
-    // uint256 public expectedReductions;
-    // string public methodology;
-    // uint256 public projectStartDate;
-    // uint256 public validationDate;
-    // uint256 public verificationDate;
-    // uint256 public issuedCredits;
-
-    string[] public data;
+    uint256 private constant ORACLE_PAYMENT = (1 * LINK_DIVISIBILITY) / 10; // 0.1 * 10**18
     string public hash;
     string public full;
 
-    /**
-     *  Sepolia
-     *@dev LINK address in Sepolia network: 0x779877A7B0D9E8603169DdbD7836e478b4624789
-     * @dev Check https://docs.chain.link/docs/link-token-contracts/ for LINK address for the right network
-     */
     constructor() ConfirmedOwner(msg.sender) {
         _setChainlinkToken(0x779877A7B0D9E8603169DdbD7836e478b4624789);
     }
 
     function requestEthereumPrice(
-        address _oracle
+        address _oracle,
+        string memory _jobId
     ) public onlyOwner {
         Chainlink.Request memory req = _buildChainlinkRequest(
-            "20e79fd0c8cb4b2d9fbcd906951daac7",
+            stringToBytes32(_jobId),
             address(this),
             this.fulfillEthereumPrice.selector
         );
@@ -92,7 +77,7 @@ contract OperatorConsumer is ChainlinkClient, ConfirmedOwner {
             "https://4fa4-14-201-139-159.ngrok-free.app/data"
         );
         req._add("pathIssuedCredits", "issuedCredits");
-        _sendChainlinkRequestTo(_oracle, req, (1 * LINK_DIVISIBILITY) / 10);
+        _sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
     }
 
     function fulfillEthereumPrice(
@@ -100,66 +85,67 @@ contract OperatorConsumer is ChainlinkClient, ConfirmedOwner {
         string memory _projectName,
         string memory _location,
         string memory _hash,
-        uint256 _expectedReductions,
+        uint256  _expectedReductions,
         string memory _methodology,
-        uint256 _projectStartDate,
-        uint256 _validationDate,
-        uint256 _verificationDate,
-        uint256 _issuedCredits
+        uint256  _projectStartDate,
+        uint256  _validationDate,
+        uint256  _verificationDate,
+        uint256  _issuedCredits
     ) public recordChainlinkFulfillment(_requestId) {
         hash = _hash;
-        full = string(abi.encodePacked(_projectName, _location, _expectedReductions, _methodology, _projectStartDate, _validationDate, _verificationDate, _issuedCredits));
+        full = string(abi.encodePacked(_projectName, _location, Strings.toString(_expectedReductions), _methodology));
+        full = string(abi.encodePacked(full, Strings.toString(_projectStartDate), Strings.toString(_validationDate), Strings.toString(_verificationDate), Strings.toString(_issuedCredits)));
+    }
+
+    function stringToBytes32(
+        string memory source
+    ) private pure returns (bytes32 result) {
+        bytes memory tempEmptyStringTest = bytes(source);
+        if (tempEmptyStringTest.length == 0) {
+            return 0x0;
+        }
+
+        assembly {
+            // solhint-disable-line no-inline-assembly
+            result := mload(add(source, 32))
+        }
     }
     
 }
 
-// Carbon-Credits-Verification-with-Blockchain-main/contracts/Operator.sol
-// pragma solidity ^0.8.20;
-// import "@openzeppelin/contracts/token/ERC165
-
-//     // }
-
-//     function getChainlinkToken() public view returns (address) {
-//         return _chainlinkTokenAddress();
-//     }
-
-//     function withdrawLink() public onlyOwner {
-//         LinkTokenInterface link = LinkTokenInterface(_chainlinkTokenAddress());
-//         require(
-//             link.transfer(msg.sender, link.balanceOf(address(this))),
-//             "Unable to transfer"
-//         );
-//     }
-// }
-
-
-
 contract Prove {
     OperatorConsumer public opConsumer;
-    Operator public operator;
-    address[] a;
-
+    event HashResult(bytes32);
+    event Data(string);
+    
+    
     function deployAPI() public {
         opConsumer = new OperatorConsumer();
     }
 
-    function deployOperator() public {
-        operator = new Operator(0x779877A7B0D9E8603169DdbD7836e478b4624789,0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4);
-        a.push(0x48104C06a5195f196a4fff0D485bED476c165A55);
-        operator.setAuthorizedSenders(a);
+    function getProjDetails(address opNode) public {
+        opConsumer.requestEthereumPrice(opNode, "95edfc2ee2724e1db6db0eecf74d2669");
     }
 
-    function getProjDetails() public {
-        opConsumer.requestEthereumPrice(address(opConsumer));
+    function hashCheck() public view returns (bool) {
+        bytes32 calcHash = keccak256(abi.encodePacked(opConsumer.full()));
+        string memory calcHashStr = bytes32ToString(calcHash);
+        return keccak256(abi.encodePacked(calcHashStr)) == keccak256(abi.encodePacked(opConsumer.hash()));
     }
 
-    function hash() public view returns (bool) {
-        return keccak256(bytes(opConsumer.full())) == keccak256(bytes(opConsumer.hash()));
+
+    function bytes32ToString(bytes32 data) public pure returns (string memory) {
+        bytes memory alphabet = "0123456789abcdef";
+        bytes memory str = new bytes(64); // Each byte corresponds to 2 hex characters
+
+        for (uint256 i = 0; i < 32; i++) {
+            str[i * 2] = alphabet[uint8(data[i] >> 4) & 0xf]; // Extract the first 4 bits
+            str[1 + i * 2] = alphabet[uint8(data[i]) & 0xf];  // Extract the last 4 bits
+        }
+
+        return string(str);
     }
 
-    function checkWorking(uint x, uint y) public pure returns (bool) {
-        return x == y;
-    }
-
+    
 
 }
