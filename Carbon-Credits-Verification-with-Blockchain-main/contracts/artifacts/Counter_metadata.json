@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.19+commit.7dd6d404"
+		"version": "0.8.29+commit.ab55807c"
 	},
 	"language": "Solidity",
 	"output": {
@@ -108,22 +108,21 @@
 					"notice": "Use an interval in seconds and a timestamp to slow execution of Upkeep"
 				}
 			},
-			"notice": "THIS IS AN EXAMPLE CONTRACT THAT USES HARDCODED VALUES FOR CLARITY. THIS IS AN EXAMPLE CONTRACT THAT USES UN-AUDITED CODE. DO NOT USE THIS CODE IN PRODUCTION.",
 			"version": 1
 		}
 	},
 	"settings": {
 		"compilationTarget": {
-			"Carbon-Credits-Verification-with-Blockchain-main/contracts/alert.sol": "Counter"
+			"Carbon-Credits-Verification-with-Blockchain-main/contracts/test.sol": "Counter"
 		},
-		"evmVersion": "paris",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
-			"runs": 200
+			"enabled": true,
+			"runs": 20
 		},
 		"remappings": []
 	},
@@ -152,12 +151,12 @@
 				"dweb:/ipfs/Qmanoi2CDi9MwkP44HosagvewfMEvCMN1YthGRmCexVjwY"
 			]
 		},
-		"Carbon-Credits-Verification-with-Blockchain-main/contracts/alert.sol": {
-			"keccak256": "0xaf0ccd1f58c443f327f8e07deaebc483e0efada9a9ffc04a6cb5431d11100dc5",
+		"Carbon-Credits-Verification-with-Blockchain-main/contracts/test.sol": {
+			"keccak256": "0x772b8b87f1683f7fa24c6c14a7b046892964cb983ea267b620d7d95d6264b33d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d94a1fdfbc7cabae9bdb0f15cf2c9ac70e77e709572cd829414fc3a0e99b593b",
-				"dweb:/ipfs/QmNyCxYZUbVS1KFktVGgbrf7GjA4PW8RwMKpXNJQfqujYa"
+				"bzz-raw://a3ad2941cc48b52cbcb08a79fcaa8107d88823a68ce67d0cb374e38f41f9b977",
+				"dweb:/ipfs/QmcACTSo9nFsTeicQxneQaCBMoHFNDt2PiHTTxYmkdZTq5"
 			]
 		}
 	},

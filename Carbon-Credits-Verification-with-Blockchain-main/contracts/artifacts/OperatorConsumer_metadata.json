@@ -241,7 +241,6 @@
 					"notice": "Allows an owner to begin transferring ownership to a new address."
 				}
 			},
-			"notice": "THIS IS AN EXAMPLE CONTRACT THAT USES UN-AUDITED CODE. DO NOT USE THIS CODE IN PRODUCTION.",
 			"version": 1
 		}
 	},
@@ -486,11 +485,11 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/prove.sol": {
-			"keccak256": "0x41eb3f305d7ac18cd4909c24384d2bfe25027249d04e639a1c23e0dbb3ef49e4",
+			"keccak256": "0x0fa0f24b4f902bd6678d82639d640fef1df89530447f0f292a24fa6734a7c6db",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://1ba517b5b02c5eac1ffa412d31aad6704ee4fd9b6f03f498d2d0f272f899d8a7",
-				"dweb:/ipfs/QmQfpsMXX3aRHizAvKy44bF2NuiCeKciMCvbYojywNdiDF"
+				"bzz-raw://e4fe93393ad90194222c0b322c73ab85a335982b6ea08790f99e71827dd4596f",
+				"dweb:/ipfs/QmTVAwhZLLnDCCkrSZB4y7K44kecCgifYpyqZfzWeBCcrX"
 			]
 		}
 	},

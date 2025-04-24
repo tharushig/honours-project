@@ -99,8 +99,8 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
-			"runs": 200
+			"enabled": true,
+			"runs": 20
 		},
 		"remappings": []
 	},
@@ -114,11 +114,11 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/automationNode.sol": {
-			"keccak256": "0xfa2ec142c86eef52d6eacf8016100fa930a76b0971646a554f786c5740a6d195",
+			"keccak256": "0xa72e6d28d2294a98a1f351b8f145d26d0b1507a499664423d1b8e7e3d2ebb943",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://f5e05fdb1d8f9ce7c24fe731ec7b42ca7e6f223ef62cae8a2ebd67882eb46432",
-				"dweb:/ipfs/Qmf8m3YEej5k6Z9bguvqVEzpTr5SK49g6sUgfW78SDbjzt"
+				"bzz-raw://1d4024887c6c8f3d909a001dcdc6d110cd5a5dcfbc606e915831f883d614b58b",
+				"dweb:/ipfs/QmYmRnL8x8KzWSoqJQ4C8EJ5Pf4x5k3R7n5RLMHQpw9JL4"
 			]
 		}
 	},

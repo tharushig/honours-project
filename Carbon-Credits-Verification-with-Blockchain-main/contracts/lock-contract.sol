@@ -34,7 +34,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         Chainlink.Request memory req = _buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
         req._add(
             "get",
-            "https://0853-14-200-75-54.ngrok-free.app/data"
+            "https://a34b-101-115-19-166.ngrok-free.app/check"
         );
         req._add("path", "num");
         int256 timesAmount = 1;
@@ -113,13 +113,13 @@ contract Lock {
         if (val == 4) {
             return projectState.APPROVED;
         }
-        else if (val == 5) {
+        else if (val == 3) {
             return projectState.REJECTED;
         }
-        else if (val == 3) {
+        else if (val == 2) {
             return projectState.VALIDATION;
         }
-        else if (val == 2) {
+        else if (val == 1) {
             return projectState.VERIFICATION;
         }
         else {
@@ -139,20 +139,29 @@ contract Lock {
         return (propDep,verrDep);
     }
 
+    function newProp() public  {
+        
+        Proponents storage p = proponents[msg.sender];
+        p.name="Sam";
+        p.propAddr = payable(0xF3447C8a17761E8E5233fE5a50AC72ceCA387559);
+        p.repScore = 7;
+        p.balance= 1;
+    }
+
     function newProject() public {
-        require(address(apiConsumer) != address(0), "Deploy APIConsumer first!");
-        Response memory resp1 = Response({verifier : payable (0x5B38Da6a701c568545dCfcB03FcB875f56beddC4), response:true, reason : ""});
+        // require(address(apiConsumer) != address(0), "Deploy APIConsumer first!");
+        Response memory resp1 = Response({verifier : payable (0x090fab679bbea10C247209cD6A22A0aC7d9a4829), response:false, reason : ""});
         validators.push(resp1);
         verifiers.push(resp1);
-        Response memory resp2 = Response({verifier : payable (0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2), response:true, reason : ""});
+        Response memory resp2 = Response({verifier : payable (0x84030698cb02D41796503b43a36f61F25422FFF5), response:true, reason : ""});
         validators.push(resp2);
         verifiers.push(resp2);
-        Response memory resp3 = Response({verifier : payable (0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db), response:true, reason : ""});
+        Response memory resp3 = Response({verifier : payable (0x65d24ea35566891CB99ddA55213a4E76c39B806E), response:true, reason : ""});
         validators.push(resp3);
         verifiers.push(resp3);
         Project storage p = projects[msg.sender];
         p.projectId=1234567890;
-        p.proponent=payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4);
+        p.proponent=payable(0xF3447C8a17761E8E5233fE5a50AC72ceCA387559);
         p.projectDocs="";
         p.startDate=1;
         p.creditingPeriod=5*24*60*60;
@@ -164,26 +173,52 @@ contract Lock {
         p.verifyResponse=verifiers;
         p.proState=projectState.VERIFICATION;
         p.issueCredit=true;
-        uint req = uint(apiConsumer.requestData(1));
+        // uint req = uint(apiConsumer.requestData(1));
     }
 
-    function addProponent() public returns (uint) {
-        Proponents storage pr = proponents[msg.sender];
-        pr.name = "Sam";
-        pr.propAddr = payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4);
-        pr.repScore = 10;
-        pr.balance = 1000000;
-        return pr.repScore;
-    }
+   function checkVerifiers () public view returns (bool) {
+        uint trueCount = 0;
+        for (uint i = 0; i < 3; i ++) 
+        {
+            if (projects[msg.sender].verifyResponse[i].response) {
+                trueCount += 1;
+            }
+        }
+        if (trueCount > 1) {
+            return true;
+        }
+        return false;
+   }
+
+   function checkValidators () public view returns (bool) {
+        uint trueCount = 0;
+        for (uint i = 0; i < 3; i ++) 
+        {
+            if (projects[msg.sender].validateResponse[i].response) {
+                trueCount += 1;
+            }
+        }
+        if (trueCount > 1) {
+            return true;
+        }
+        return false;
+   }
 
     // simulates the project changing states
-    function changeProjectState(projectState _proState) public {
+    function changeProjectState(projectState _proState) public payable  {
         projects[msg.sender].proState = _proState;
+        // we want to check 
         if (_proState == projectState.APPROVED || _proState == projectState.REJECTED) {
-            if (address(this).balance >= 4) {
-                dataBefore = apiConsumer.volume();
-                uint req = uint(apiConsumer.requestData(1));
-                distributePay(projects[msg.sender], proponents[msg.sender]);
+            if (address(this).balance >= 3000) {
+                if (checkVerifiers() == true && checkValidators() == true) {
+                    // dataBefore = apiConsumer.volume();
+                    dataBefore = 1;
+                    // uint req = uint(apiConsumer.requestData(1));
+                    distributePay(projects[msg.sender], proponents[msg.sender]);
+                }
+                else {
+                    emit Balance("Didn't pass validation and verification");
+                }
             }
             else {
                 emit Balance("Not Enough Deposited");
@@ -200,21 +235,12 @@ contract Lock {
     //releases deposit based on performance
     function distributePay(Project memory proj, Proponents memory prop) public payable {
         (uint depProp, uint depVerr) = calculateDeposit(prop.repScore);
-        // uint dataAfter = 1;
-        uint dataAfter = apiConsumer.volume();
+        uint dataAfter = 1;
+        // uint dataAfter = apiConsumer.volume();
         if (proj.proState == projectState.APPROVED) {
             emit Deposit("into approved", 1);
             // paying the proponent
-            returnDeposit(payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), depProp);
-
-            returnDeposit(proj.verifyResponse[0].verifier, 1);
-            returnDeposit(proj.verifyResponse[1].verifier, 1);
-            returnDeposit(proj.verifyResponse[2].verifier, 1);
-
-            // //paying the validators
-            returnDeposit(proj.validateResponse[0].verifier, 1);
-            returnDeposit(proj.validateResponse[1].verifier, 1);
-            returnDeposit(proj.validateResponse[2].verifier, 1);
+            returnDeposit(prop.propAddr, depProp);
 
             //adjusting the reputation score
             prop.repScore += 1;
@@ -222,7 +248,6 @@ contract Lock {
             //check that the verifiers have done their job by using oracles
             if (dataBefore == dataAfter) {
                 //paying the verifiers
-                returnDeposit(payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), depProp);
                 returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
                 returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
                 returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
@@ -253,7 +278,7 @@ contract Lock {
         //ensuring repScore remains valid
         checkRepScore(prop.propAddr);
         //burn address for the rest of the balance
-        returnDeposit(payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), address(this).balance);
+        returnDeposit(payable(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4), address(this).balance);
         emit Deposit("repScore", prop.balance);
         emit Deposit("msg.sender Balance", msg.sender.balance);
     }
@@ -274,10 +299,6 @@ contract Lock {
         }
     }
 }
-
-
-
-
 
 
 
@@ -326,3 +347,12 @@ contract RecievePayment {
     
 }
 
+
+ // function addProponent() public returns (uint) {
+    //     Proponents storage pr = proponents[msg.sender];
+    //     pr.name = "Sam";
+    //     pr.propAddr = payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4);
+    //     pr.repScore = 10;
+    //     pr.balance = 1000000;
+    //     return pr.repScore;
+    // }

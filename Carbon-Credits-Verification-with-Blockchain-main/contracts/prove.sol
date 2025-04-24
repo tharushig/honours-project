@@ -7,12 +7,6 @@ import "@chainlink/contracts@1.3.0/src/v0.8/shared/interfaces/LinkTokenInterface
 import {Operator} from "@chainlink/contracts@1.3.0/src/v0.8/operatorforwarder/Operator.sol";
 
 
-/**
- * THIS IS AN EXAMPLE CONTRACT THAT USES UN-AUDITED CODE.
- * DO NOT USE THIS CODE IN PRODUCTION.
- */
-
-
 contract OperatorConsumer is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
     uint256 private constant ORACLE_PAYMENT = (1 * LINK_DIVISIBILITY) / 10; // 0.1 * 10**18
@@ -34,47 +28,47 @@ contract OperatorConsumer is ChainlinkClient, ConfirmedOwner {
         );
         req._add(
             "urlProjectName",
-            "https://4fa4-14-201-139-159.ngrok-free.app/data"
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
         );
         req._add("pathProjectName", "projectName");
         req._add(
             "urlLocation",
-            "https://4fa4-14-201-139-159.ngrok-free.app/data"
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
         );
         req._add("pathLocation", "location");
         req._add(
             "urlHash",
-            "https://4fa4-14-201-139-159.ngrok-free.app/data"
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
         );
         req._add("pathHash", "hash");
         req._add(
             "urlExpectedReductions",
-            "https://4fa4-14-201-139-159.ngrok-free.app/data"
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
         );
         req._add("pathExpectedReductions", "expectedReductions");
         req._add(
             "urlMethodology",
-            "https://4fa4-14-201-139-159.ngrok-free.app/data"
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
         );
         req._add("pathMethodology", "methodology");
         req._add(
             "urlProjectStartDate",
-            "https://4fa4-14-201-139-159.ngrok-free.app/data"
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
         );
         req._add("pathProjectStartDate", "projectStartDate");
         req._add(
             "urlValidationDate",
-            "https://4fa4-14-201-139-159.ngrok-free.app/data"
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
         );
         req._add("pathValidationDate", "validationDate");
         req._add(
             "urlVerificationDate",
-            "https://4fa4-14-201-139-159.ngrok-free.app/data"
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
         );
         req._add("pathVerificationDate", "verificationDate");
         req._add(
             "urlIssuedCredits",
-            "https://4fa4-14-201-139-159.ngrok-free.app/data"
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
         );
         req._add("pathIssuedCredits", "issuedCredits");
         _sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
