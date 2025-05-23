@@ -959,11 +959,11 @@
 			]
 		},
 		"@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol": {
-			"keccak256": "0xa9f8b7e09811f4ac9f421116b5d6bcf50b5748025c0cb012aaf5ff7c39a6b46a",
+			"keccak256": "0x83e471e40ec7483f7cdac3490e9198e539a10015d7d3e76e7ab6ba899acb2bb5",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d66b2096987616cda4611c109d9904863872ca5852d736b30f0e19e49afde35f",
-				"dweb:/ipfs/Qmc6jpm3k3YuJG7U2s3FWr81Vk2rdQBhdqD9sA6b8Cr9BE"
+				"bzz-raw://ac9f293255ca802b3fdf767a6558aa15e9e02b4014da3c019361f34d1620a0b8",
+				"dweb:/ipfs/QmVJF4hNUADyFm4GVrEVd3srq4YKMmvk3roBnRkGk3VFGo"
 			]
 		},
 		"@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol": {

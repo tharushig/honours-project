@@ -3,12 +3,50 @@ pragma solidity ^0.8.20;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
+import "@chainlink/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol";
+import {VRFConsumerBaseV2Plus} from "@chainlink/contracts@1.4.0/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
+import {VRFV2PlusClient} from "@chainlink/contracts@1.4.0/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 
 
-// Perhaps the lock contract can be triggered when the proponent submits the project?
-// When should the lock contract actually release the pay? Is it when the project passes verification?
-// If going by the sequence diagram, then the should be after the verification
-// At the moment it is triggered by the balance being enough
+contract VRFD20 is VRFConsumerBaseV2Plus {
+    uint256 private constant ROLL_IN_PROGRESS = 42;
+    uint256 public s_subscriptionId;
+    address public vrfCoordinator = 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B;
+    bytes32 public s_keyHash = 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae;
+    uint256[] public s_randomWords;
+    uint32 public callbackGasLimit = 100000;
+    uint16 public requestConfirmations = 3;
+    uint32 public numWords = 1;
+
+
+    constructor(uint256 subscriptionId) VRFConsumerBaseV2Plus(vrfCoordinator) {
+        s_subscriptionId = subscriptionId;
+    }
+
+    function rollDice() public onlyOwner returns (uint256 requestId) {
+        // Will revert if subscription is not set and funded.
+        requestId = s_vrfCoordinator.requestRandomWords(
+            VRFV2PlusClient.RandomWordsRequest({
+                keyHash: s_keyHash,
+                subId: s_subscriptionId,
+                requestConfirmations: requestConfirmations,
+                callbackGasLimit: callbackGasLimit,
+                numWords: numWords,
+                extraArgs: VRFV2PlusClient._argsToBytes(
+                    // Set nativePayment to true to pay for VRF requests with Sepolia ETH instead of LINK
+                    VRFV2PlusClient.ExtraArgsV1({nativePayment: false})
+                )
+            })
+        );
+    }
+
+    function fulfillRandomWords(uint256,uint256[] calldata randomWords ) internal override {
+        s_randomWords = randomWords;
+    }
+
+}
+
 
 
 contract APIConsumer is ChainlinkClient, ConfirmedOwner {
@@ -67,7 +105,6 @@ contract Lock {
         uint removalGHG;
         string projectType;
         string methodology;
-        Response[] validateResponse;
         Response[] verifyResponse;
         projectState proState;
         bool issueCredit;
@@ -93,7 +130,6 @@ contract Lock {
         uint balance;
     }
 
-    Response[] public validators;
     Response[] public verifiers;
     // Proponents[] public proponents;
     // Project[] public projects;
@@ -151,13 +187,10 @@ contract Lock {
     function newProject() public {
         // require(address(apiConsumer) != address(0), "Deploy APIConsumer first!");
         Response memory resp1 = Response({verifier : payable (0x090fab679bbea10C247209cD6A22A0aC7d9a4829), response:false, reason : ""});
-        validators.push(resp1);
         verifiers.push(resp1);
         Response memory resp2 = Response({verifier : payable (0x84030698cb02D41796503b43a36f61F25422FFF5), response:true, reason : ""});
-        validators.push(resp2);
         verifiers.push(resp2);
         Response memory resp3 = Response({verifier : payable (0x65d24ea35566891CB99ddA55213a4E76c39B806E), response:true, reason : ""});
-        validators.push(resp3);
         verifiers.push(resp3);
         Project storage p = projects[msg.sender];
         p.projectId=1234567890;
@@ -169,7 +202,6 @@ contract Lock {
         p.removalGHG=8739.90 * (1 ether);
         p.projectType="";
         p.methodology="";
-        p.validateResponse=validators;
         p.verifyResponse=verifiers;
         p.proState=projectState.VERIFICATION;
         p.issueCredit=true;
@@ -190,27 +222,13 @@ contract Lock {
         return false;
    }
 
-   function checkValidators () public view returns (bool) {
-        uint trueCount = 0;
-        for (uint i = 0; i < 3; i ++) 
-        {
-            if (projects[msg.sender].validateResponse[i].response) {
-                trueCount += 1;
-            }
-        }
-        if (trueCount > 1) {
-            return true;
-        }
-        return false;
-   }
-
     // simulates the project changing states
     function changeProjectState(projectState _proState) public payable  {
         projects[msg.sender].proState = _proState;
         // we want to check 
         if (_proState == projectState.APPROVED || _proState == projectState.REJECTED) {
             if (address(this).balance >= 3000) {
-                if (checkVerifiers() == true && checkValidators() == true) {
+                if (checkVerifiers() == true) {
                     // dataBefore = apiConsumer.volume();
                     dataBefore = 1;
                     // uint req = uint(apiConsumer.requestData(1));
@@ -251,11 +269,6 @@ contract Lock {
                 returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
                 returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
                 returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
-
-                // //paying the validators
-                returnDeposit(proj.validateResponse[0].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.validateResponse[1].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.validateResponse[2].verifier, (depVerr+2000)/3);
             }
         }
         else if (proj.proState == projectState.REJECTED) {
@@ -265,11 +278,6 @@ contract Lock {
                 returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
                 returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
                 returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
-
-                //paying the validators
-                returnDeposit(proj.validateResponse[0].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.validateResponse[1].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.validateResponse[2].verifier, (depVerr+2000)/3);
             }
             // adjusting the reputation score
             prop.repScore -= 1;
