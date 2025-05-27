@@ -24,7 +24,7 @@ contract VRFD20 is VRFConsumerBaseV2Plus {
         s_subscriptionId = subscriptionId;
     }
 
-    function rollDice() public onlyOwner returns (uint256 requestId) {
+    function requestRandom() public onlyOwner returns (uint256 requestId) {
         // Will revert if subscription is not set and funded.
         requestId = s_vrfCoordinator.requestRandomWords(
             VRFV2PlusClient.RandomWordsRequest({
@@ -112,7 +112,9 @@ contract Lock {
 
     // Project public project;
     APIConsumer public apiConsumer;
+    VRFD20 public vrf;
     uint public dataBefore;
+    uint public vrfNum;
 
     enum projectState {SUBMITTED, VERIFICATION, VALIDATION, APPROVED, REJECTED}
 
@@ -140,9 +142,44 @@ contract Lock {
     event Deposit(string, uint amount);
     event Balance(string);
     event CheckAddr(address, string);
+    event checkResp(Response[], string);
 
     function deploy() public {
         apiConsumer = new APIConsumer();
+        vrf = new VRFD20(76195552127779171116519451722131943009323967143011630297663303055390353341770);
+    }
+
+    function addVerifier(address verifier, bool resp, string memory message) public {
+        Response memory resp0 = Response({verifier : payable (verifier), response:resp, reason : message});
+        verifiers.push(resp0);
+        Response memory resp1 = Response({verifier : payable (0x090fab679bbea10C247209cD6A22A0aC7d9a4829), response:false, reason : "number 1"});
+        verifiers.push(resp1);
+        Response memory resp2 = Response({verifier : payable (0x84030698cb02D41796503b43a36f61F25422FFF5), response:true, reason : "number 2"});
+        verifiers.push(resp2);
+        Response memory resp3 = Response({verifier : payable (0x65d24ea35566891CB99ddA55213a4E76c39B806E), response:true, reason : "number 3"});
+        verifiers.push(resp3);
+        Response memory resp4 = Response({verifier : payable (0x090fab679bbea10C247209cD6A22A0aC7d9a4829), response:false, reason : "number 4"});
+        verifiers.push(resp4);
+        Response memory resp5 = Response({verifier : payable (0x84030698cb02D41796503b43a36f61F25422FFF5), response:true, reason : "number 5"});
+        verifiers.push(resp5);
+        Response memory resp6 = Response({verifier : payable (0x65d24ea35566891CB99ddA55213a4E76c39B806E), response:true, reason : "number 6"});
+        verifiers.push(resp6);
+        vrf.requestRandom();
+    }
+
+    function randomiseVerifiers(address projectOwner)  public{
+        projects[projectOwner].verifyResponse.push(verifiers[vrfNum % verifiers.length]);
+        projects[projectOwner].verifyResponse.push(verifiers[(vrfNum / 2) % verifiers.length]);
+        projects[projectOwner].verifyResponse.push(verifiers[(vrfNum * 2) % verifiers.length]);
+        emit checkResp(projects[msg.sender].verifyResponse, "from project");
+    }
+
+    function getVerifiers() view public returns (Response[] memory) {
+        return projects[msg.sender].verifyResponse;
+    }
+
+    function getNum() public {
+        vrfNum = vrf.s_randomWords(0);
     }
 
     function getProjectState(uint val) pure  public  returns (projectState) {
@@ -186,12 +223,7 @@ contract Lock {
 
     function newProject() public {
         // require(address(apiConsumer) != address(0), "Deploy APIConsumer first!");
-        Response memory resp1 = Response({verifier : payable (0x090fab679bbea10C247209cD6A22A0aC7d9a4829), response:false, reason : ""});
-        verifiers.push(resp1);
-        Response memory resp2 = Response({verifier : payable (0x84030698cb02D41796503b43a36f61F25422FFF5), response:true, reason : ""});
-        verifiers.push(resp2);
-        Response memory resp3 = Response({verifier : payable (0x65d24ea35566891CB99ddA55213a4E76c39B806E), response:true, reason : ""});
-        verifiers.push(resp3);
+        getNum();
         Project storage p = projects[msg.sender];
         p.projectId=1234567890;
         p.proponent=payable(0xF3447C8a17761E8E5233fE5a50AC72ceCA387559);
@@ -202,7 +234,7 @@ contract Lock {
         p.removalGHG=8739.90 * (1 ether);
         p.projectType="";
         p.methodology="";
-        p.verifyResponse=verifiers;
+        randomiseVerifiers(msg.sender);
         p.proState=projectState.VERIFICATION;
         p.issueCredit=true;
         // uint req = uint(apiConsumer.requestData(1));
@@ -350,17 +382,6 @@ contract RecievePayment {
 
     function testReturn () public {
         emit LogMessage("Test return is executed", address(this));
-    }
-
-    
+    } 
 }
 
-
- // function addProponent() public returns (uint) {
-    //     Proponents storage pr = proponents[msg.sender];
-    //     pr.name = "Sam";
-    //     pr.propAddr = payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4);
-    //     pr.repScore = 10;
-    //     pr.balance = 1000000;
-    //     return pr.repScore;
-    // }

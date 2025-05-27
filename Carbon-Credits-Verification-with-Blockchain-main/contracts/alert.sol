@@ -34,11 +34,18 @@ contract AlertMonitor {
 
     }
 
-    function sendMessage(address recipientAddress, string memory message) public {
+
+    function getBalanceLock() public view returns (uint256) {
+        return address(lock).balance;
+    }
+
+    function getBalanceAlert() public view returns (uint256) {
+        return address(this).balance;
+    }
+
+    function sendMessage(address recipientAddress, string calldata mess) public {
         // Interface-style call to the recipient's function
-        (bool success, ) = recipientAddress.call(
-            abi.encodeWithSignature("receiveMessage(string)", message)
-        );
+        (bool success, ) = recipientAddress.call(abi.encodeWithSignature("receiveMessage(string)", mess)); 
         require(success, "Message delivery failed!");
         deployLock();
     }
@@ -91,16 +98,32 @@ contract Recipient {
     }
 }
 
+contract SenderMoney {
+    event LogMessage(string, address);
+    function sendEther(address payable receiverAddress) public payable {
+        // Sending Ether to the receiver contract
+        //Need to do the same for verra but not sure how
+        (bool success, ) = receiverAddress.call{value: msg.value}("");
+        require(success, "Transfer failed.");
+    }
+
+    receive() external payable {
+        testReturn();
+    }
+
+    function testReturn () public {
+        emit LogMessage("Sender received money back", address(this));
+    }
+}
 
 
-
-//contract Sender2 {
-//     // Function to send message to another contract
-//     function sendMessage(address recipientAddress, string memory message) external {
-//         // Interface-style call to the recipient's function
-//         (bool success, ) = recipientAddress.call(
-//             abi.encodeWithSignature("receiveMessage(string)", message)
-//         );
-//         require(success, "Message delivery failed!");
-//     }
-// }
+// //contract Sender2 {
+// //     // Function to send message to another contract
+// //     function sendMessage(address recipientAddress, string memory message) external {
+// //         // Interface-style call to the recipient's function
+// //         (bool success, ) = recipientAddress.call(
+// //             abi.encodeWithSignature("receiveMessage(string)", message)
+// //         );
+// //         require(success, "Message delivery failed!");
+// //     }
+// // }
