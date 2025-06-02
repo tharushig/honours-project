@@ -14,6 +14,7 @@ contract AlertMonitor {
 
     event SendAlert(address addr, string message);
 
+    mapping(address => string) public messages;
 
     function deployLock() public {
         lock = new Lock();
@@ -34,7 +35,6 @@ contract AlertMonitor {
 
     }
 
-
     function getBalanceLock() public view returns (uint256) {
         return address(lock).balance;
     }
@@ -43,10 +43,8 @@ contract AlertMonitor {
         return address(this).balance;
     }
 
-    function sendMessage(address recipientAddress, string calldata mess) public {
-        // Interface-style call to the recipient's function
-        (bool success, ) = recipientAddress.call(abi.encodeWithSignature("receiveMessage(string)", mess)); 
-        require(success, "Message delivery failed!");
+    function sendMessage(address recipientAddress) public {
+        messages[recipientAddress] = "Your project is scheduled to undergo its annual monitoring.";
         deployLock();
     }
 
