@@ -8,7 +8,6 @@ import "Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract
 contract AlertMonitor {
     Lock public lock;
 
-
     event Message(string);
 
 
@@ -18,13 +17,13 @@ contract AlertMonitor {
 
     function deployLock() public {
         lock = new Lock();
+        lock.isMonitoring(true);
         lock.newProject();
         lock.newProp();
     }
     
     function returnDeposits() public {
         lock.changeProjectState(lock.getProjectState(4));
-
     }
 
     receive() external payable {

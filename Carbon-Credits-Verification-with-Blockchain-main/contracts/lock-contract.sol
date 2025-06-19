@@ -5,10 +5,11 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import {VRFConsumerBaseV2Plus} from "@chainlink/contracts@1.4.0/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
 import {VRFV2PlusClient} from "@chainlink/contracts@1.4.0/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 
-
+// VRF Contract for randomness
 contract VRFD20 is VRFConsumerBaseV2Plus {
     uint256 private constant ROLL_IN_PROGRESS = 42;
     uint256 public s_subscriptionId;
@@ -18,7 +19,6 @@ contract VRFD20 is VRFConsumerBaseV2Plus {
     uint32 public callbackGasLimit = 100000;
     uint16 public requestConfirmations = 3;
     uint32 public numWords = 1;
-
 
     constructor(uint256 subscriptionId) VRFConsumerBaseV2Plus(vrfCoordinator) {
         s_subscriptionId = subscriptionId;
@@ -47,54 +47,109 @@ contract VRFD20 is VRFConsumerBaseV2Plus {
 
 }
 
-
-
+// API Contract to get data
 contract APIConsumer is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
-
-    uint256 public volume;
-    bytes32 private jobId;
-    uint256 private fee;
-
-    event RequestVolume(bytes32 indexed requestId, uint256 volume);
+    uint256 private constant ORACLE_PAYMENT = (1 * LINK_DIVISIBILITY) / 10; // 0.1 * 10**18
+    string public hash;
+    string public full;
 
     constructor() ConfirmedOwner(msg.sender) {
         _setChainlinkToken(0x779877A7B0D9E8603169DdbD7836e478b4624789);
-        _setChainlinkOracle(0x6090149792dAAeE9D1D568c9f9a6F6B46AA29eFD);
-        jobId = "ca98366cc7314957b8c012c72f05aeeb";
-        fee = (1 * LINK_DIVISIBILITY) / 10;
     }
 
-    event Data(string);
-    event Result(string, uint);
-
-    function requestData(uint projectId) public returns (bytes32 requestId) {
-        Chainlink.Request memory req = _buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
-        req._add(
-            "get",
-            "https://a34b-101-115-19-166.ngrok-free.app/check"
+    function requestEthereumPrice(
+        address _oracle,
+        string memory _jobId
+    ) public onlyOwner {
+        Chainlink.Request memory req = _buildChainlinkRequest(
+            stringToBytes32(_jobId),
+            address(this),
+            this.fulfillEthereumPrice.selector
         );
-        req._add("path", "num");
-        int256 timesAmount = 1;
-        req._addInt("times", timesAmount);
-        emit Result("Made the get request", projectId);
-        return _sendChainlinkRequest(req, fee);
+        req._add(
+            "urlProjectName",
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
+        );
+        req._add("pathProjectName", "projectName");
+        req._add(
+            "urlLocation",
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
+        );
+        req._add("pathLocation", "location");
+        req._add(
+            "urlHash",
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
+        );
+        req._add("pathHash", "hash");
+        req._add(
+            "urlExpectedReductions",
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
+        );
+        req._add("pathExpectedReductions", "expectedReductions");
+        req._add(
+            "urlMethodology",
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
+        );
+        req._add("pathMethodology", "methodology");
+        req._add(
+            "urlProjectStartDate",
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
+        );
+        req._add("pathProjectStartDate", "projectStartDate");
+        req._add(
+            "urlValidationDate",
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
+        );
+        req._add("pathValidationDate", "validationDate");
+        req._add(
+            "urlVerificationDate",
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
+        );
+        req._add("pathVerificationDate", "verificationDate");
+        req._add(
+            "urlIssuedCredits",
+            "https://a34b-101-115-19-166.ngrok-free.app/data"
+        );
+        req._add("pathIssuedCredits", "issuedCredits");
+        _sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
     }
 
-    function fulfill(bytes32 _requestId, uint256 _volume) public recordChainlinkFulfillment(_requestId) {
-        emit RequestVolume(_requestId, _volume);
-        volume = _volume;
+    function fulfillEthereumPrice(
+        bytes32 _requestId,
+        string memory _projectName,
+        string memory _location,
+        string memory _hash,
+        uint256  _expectedReductions,
+        string memory _methodology,
+        uint256  _projectStartDate,
+        uint256  _validationDate,
+        uint256  _verificationDate,
+        uint256  _issuedCredits
+    ) public recordChainlinkFulfillment(_requestId) {
+        hash = _hash;
+        full = string(abi.encodePacked(_projectName, _location, Strings.toString(_expectedReductions), _methodology));
+        full = string(abi.encodePacked(full, Strings.toString(_projectStartDate), Strings.toString(_validationDate), Strings.toString(_verificationDate), Strings.toString(_issuedCredits)));
     }
 
-    function withdrawLink() public onlyOwner {
-        LinkTokenInterface link = LinkTokenInterface(_chainlinkTokenAddress());
-        require(link.transfer(msg.sender, link.balanceOf(address(this))),"Unable to transfer");
+    function stringToBytes32(
+        string memory source
+    ) private pure returns (bytes32 result) {
+        bytes memory tempEmptyStringTest = bytes(source);
+        if (tempEmptyStringTest.length == 0) {
+            return 0x0;
+        }
+
+        assembly {
+            // solhint-disable-line no-inline-assembly
+            result := mload(add(source, 32))
+        }
     }
 }
 
+
+// Main Contract
 contract Lock {
-    // APIConsumer public apiConsumer;
-    // Struct to represent projects
     struct Project {
         uint projectId;
         address payable proponent;
@@ -110,15 +165,15 @@ contract Lock {
         bool issueCredit;
     }
 
-    // Project public project;
     APIConsumer public apiConsumer;
     VRFD20 public vrf;
-    uint public dataBefore;
+    string public dataBefore;
+    string public dataAfter;
     uint public vrfNum;
+    bool monitoring;
 
     enum projectState {SUBMITTED, VERIFICATION, VALIDATION, APPROVED, REJECTED}
 
-    // Struct for displaying verification/validation
     struct Response {
         address payable verifier;
         bool response;
@@ -133,8 +188,6 @@ contract Lock {
     }
 
     Response[] public verifiers;
-    // Proponents[] public proponents;
-    // Project[] public projects;
 
     mapping (address => Project) public projects;
     mapping (address => Proponents) public proponents;
@@ -144,11 +197,13 @@ contract Lock {
     event CheckAddr(address, string);
     event checkResp(Response[], string);
 
+    // Deploys chainlink contracts
     function deploy() public {
         apiConsumer = new APIConsumer();
         vrf = new VRFD20(76195552127779171116519451722131943009323967143011630297663303055390353341770);
     }
 
+    // Adds list of authorised verifiers
     function addVerifier(address verifier, bool resp, string memory message) public {
         Response memory resp0 = Response({verifier : payable (verifier), response:resp, reason : message});
         verifiers.push(resp0);
@@ -167,6 +222,7 @@ contract Lock {
         vrf.requestRandom();
     }
 
+    // Picks 3 random verifiers
     function randomiseVerifiers(address projectOwner)  public{
         projects[projectOwner].verifyResponse.push(verifiers[vrfNum % verifiers.length]);
         projects[projectOwner].verifyResponse.push(verifiers[(vrfNum / 2) % verifiers.length]);
@@ -178,10 +234,37 @@ contract Lock {
         return projects[msg.sender].verifyResponse;
     }
 
+    // Gets random value from VRF
     function getNum() public {
         vrfNum = vrf.s_randomWords(0);
     }
 
+    // Checks if lock is deployed during alert contract
+    function isMonitoring (bool check) public {
+        monitoring = check;
+    }
+
+    // Checks data before and after
+    function checkUnchangedData (bool time) public {
+        if (time == true) {
+            if (monitoring == true) {
+                dataBefore = apiConsumer.full();
+            }
+            else {
+                dataBefore = "unchanged";
+            }
+        }
+        else {
+            if (monitoring == true) {
+                dataAfter = apiConsumer.full();
+            }
+            else {
+                dataAfter = "unchanged";
+            }
+        }
+    }
+
+    // Gets the project state value
     function getProjectState(uint val) pure  public  returns (projectState) {
         if (val == 4) {
             return projectState.APPROVED;
@@ -201,7 +284,7 @@ contract Lock {
 
     }
 
-    //calculates the deposit based off repScore
+    // Calculates the deposit based off repScore
     function calculateDeposit(uint256 _repScore) public returns(uint,uint) {
         //Let's say fee is $2000
         // Let's make the deposit $1000 (prop deposit + verra deposit)
@@ -212,8 +295,8 @@ contract Lock {
         return (propDep,verrDep);
     }
 
+    // Creates new proponent
     function newProp() public  {
-        
         Proponents storage p = proponents[msg.sender];
         p.name="Sam";
         p.propAddr = payable(0xF3447C8a17761E8E5233fE5a50AC72ceCA387559);
@@ -221,6 +304,7 @@ contract Lock {
         p.balance= 1;
     }
 
+    // Creates new project
     function newProject() public {
         // require(address(apiConsumer) != address(0), "Deploy APIConsumer first!");
         getNum();
@@ -240,6 +324,7 @@ contract Lock {
         // uint req = uint(apiConsumer.requestData(1));
     }
 
+   // Checks if verifiers approved the project
    function checkVerifiers () public view returns (bool) {
         uint trueCount = 0;
         for (uint i = 0; i < 3; i ++) 
@@ -254,16 +339,13 @@ contract Lock {
         return false;
    }
 
-    // simulates the project changing states
+    // Simulates the project changing states and executes payment distribution
     function changeProjectState(projectState _proState) public payable  {
         projects[msg.sender].proState = _proState;
-        // we want to check 
         if (_proState == projectState.APPROVED || _proState == projectState.REJECTED) {
             if (address(this).balance >= 3000) {
                 if (checkVerifiers() == true) {
-                    // dataBefore = apiConsumer.volume();
-                    dataBefore = 1;
-                    // uint req = uint(apiConsumer.requestData(1));
+                    checkUnchangedData(true);
                     distributePay(projects[msg.sender], proponents[msg.sender]);
                 }
                 else {
@@ -282,11 +364,10 @@ contract Lock {
         
     }
 
-    //releases deposit based on performance
+    // Releases deposit based on performance
     function distributePay(Project memory proj, Proponents memory prop) public payable {
         (uint depProp, uint depVerr) = calculateDeposit(prop.repScore);
-        uint dataAfter = 1;
-        // uint dataAfter = apiConsumer.volume();
+        checkUnchangedData(false);
         if (proj.proState == projectState.APPROVED) {
             emit Deposit("into approved", 1);
             // paying the proponent
@@ -296,7 +377,7 @@ contract Lock {
             prop.repScore += 1;
 
             //check that the verifiers have done their job by using oracles
-            if (dataBefore == dataAfter) {
+            if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
                 //paying the verifiers
                 returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
                 returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
@@ -305,7 +386,7 @@ contract Lock {
         }
         else if (proj.proState == projectState.REJECTED) {
             //check that the verifiers have done their job by using oracles
-            if (dataBefore == dataAfter) {
+            if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
                 //paying the verifiers
                 returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
                 returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
@@ -323,13 +404,13 @@ contract Lock {
         emit Deposit("msg.sender Balance", msg.sender.balance);
     }
 
-    //handles payment transfers
+    // Handles payment transfers
     function returnDeposit(address payable addr, uint deposit) public payable {
         (bool sent, bytes memory data) = addr.call{value: deposit}("");
         require(sent, "Failed to send deposit to proponent");
     }
 
-    //checks and adjust if repScore is out of bounds
+    // Checks and adjusts if repScore is out of bounds
     function checkRepScore (address payable prop) public payable {
         if (proponents[prop].repScore == 0) {
             proponents[prop].repScore += 1;
@@ -385,3 +466,50 @@ contract RecievePayment {
     } 
 }
 
+
+
+
+
+
+// contract APIConsumer is ChainlinkClient, ConfirmedOwner {
+//     using Chainlink for Chainlink.Request;
+
+//     uint256 public volume;
+//     bytes32 private jobId;
+//     uint256 private fee;
+
+//     event RequestVolume(bytes32 indexed requestId, uint256 volume);
+
+//     constructor() ConfirmedOwner(msg.sender) {
+//         _setChainlinkToken(0x779877A7B0D9E8603169DdbD7836e478b4624789);
+//         _setChainlinkOracle(0x6090149792dAAeE9D1D568c9f9a6F6B46AA29eFD);
+//         jobId = "ca98366cc7314957b8c012c72f05aeeb";
+//         fee = (1 * LINK_DIVISIBILITY) / 10;
+//     }
+
+//     event Data(string);
+//     event Result(string, uint);
+
+//     function requestData(uint projectId) public returns (bytes32 requestId) {
+//         Chainlink.Request memory req = _buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
+//         req._add(
+//             "get",
+//             "https://a34b-101-115-19-166.ngrok-free.app/check"
+//         );
+//         req._add("path", "num");
+//         int256 timesAmount = 1;
+//         req._addInt("times", timesAmount);
+//         emit Result("Made the get request", projectId);
+//         return _sendChainlinkRequest(req, fee);
+//     }
+
+//     function fulfill(bytes32 _requestId, uint256 _volume) public recordChainlinkFulfillment(_requestId) {
+//         emit RequestVolume(_requestId, _volume);
+//         volume = _volume;
+//     }
+
+//     function withdrawLink() public onlyOwner {
+//         LinkTokenInterface link = LinkTokenInterface(_chainlinkTokenAddress());
+//         require(link.transfer(msg.sender, link.balanceOf(address(this))),"Unable to transfer");
+//     }
+// }
