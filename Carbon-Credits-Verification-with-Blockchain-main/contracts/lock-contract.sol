@@ -148,6 +148,20 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
 }
 
 
+/*
+Flow Execution:
+    - Deploy Lock Contract
+    - deploy()
+    - Add vrf contract address to vrf subscription manager
+    - Deploy sender if not already deployed
+    - Send >3000 to lock contract from sender
+    - AddVerifier() -> wait until fulfillment is complete on vrf sub manager
+    - newProp()
+    - newProject()
+    - changeProjectState()
+
+*/
+
 // Main Contract
 contract Lock {
     struct Project {

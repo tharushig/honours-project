@@ -110,6 +110,18 @@ contract OperatorConsumer is ChainlinkClient, ConfirmedOwner {
     
 }
 
+
+/*
+Flow Execution:
+    - Deploy opNode if haven't already
+    - Run the chainlink and postgres docker containers
+    - Deploy prove contract
+    - deployAPI()
+    - getProjectDetails() -> wait until the job is completed fully
+    - hashCheck()
+
+*/
+
 contract Prove {
     OperatorConsumer public opConsumer;
     event HashResult(bytes32);

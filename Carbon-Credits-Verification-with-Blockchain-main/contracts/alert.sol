@@ -5,6 +5,20 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol";
 
 
+/*
+Flow execution:
+    - Deploy AlertMonitor Contract
+    - sendMessage() -> message is sent to message array in alert contract
+    - Deploy sender if not already deployed
+    - Send >3000 to the alert contract from sender
+    - getAPI()
+    - Add vrf address to the vrf subscription manager
+    - AddVerifier() -> monitor on vrf sub manager and don't continue unti fulfillment is complete
+    - simulateExistingProject()
+    - returnDeposits()
+*/
+
+
 contract AlertMonitor {
     Lock public lock;
 
@@ -21,8 +35,6 @@ contract AlertMonitor {
         lock.deploy();
         lock.isMonitoring(true);
         lock.newProp();
-        // lock.addVerifier(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4, true, "testAlert");
-        // lock.newProject();
     }
 
     function getAPI() public {
