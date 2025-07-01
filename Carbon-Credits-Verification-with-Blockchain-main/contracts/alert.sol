@@ -10,6 +10,7 @@ contract AlertMonitor {
 
     event Message(string);
 
+    VRFD20 public vrf;
 
     event SendAlert(address addr, string message);
 
@@ -17,9 +18,23 @@ contract AlertMonitor {
 
     function deployLock() public {
         lock = new Lock();
+        lock.deploy();
         lock.isMonitoring(true);
-        lock.newProject();
         lock.newProp();
+        // lock.addVerifier(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4, true, "testAlert");
+        // lock.newProject();
+    }
+
+    function getAPI() public {
+        vrf = lock.vrf();
+    }
+
+    function addVerifier() public {
+        lock.addVerifier(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4, true, "testAlert");
+    }
+
+    function simulateExistingProject() public {
+        lock.newProject();
     }
     
     function returnDeposits() public {

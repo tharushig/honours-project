@@ -296,11 +296,11 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": {
-			"keccak256": "0x6e2bc63240eea80b7cda7a05ed0d9c7d731c21d59da78bb9480fa931ad2828a6",
+			"keccak256": "0x549e0a9e91c41bf8c3eec8362f50a4bee6cfb146cb077180f4a646048d6fdb5c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://28bfa4e08d5fb9d7012a3cad923b69e77993394bc6b9710bedcb8e1c0ee01efb",
-				"dweb:/ipfs/QmRfybUJApijQ7pE2dbK7hsGXruGDrHhtBk93LDroFnppg"
+				"bzz-raw://cf80ad8acfc16b430404216a52ce53d5a6b69c17999c3b5b40a6b1d1020f0e89",
+				"dweb:/ipfs/QmcWjJ2EtofLsvRw8LCAMzrymKxt7ouyfosZ1krFcdQPyL"
 			]
 		}
 	},

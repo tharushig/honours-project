@@ -1,0 +1,47 @@
+{
+  "name": "Recipient",
+  "address": "0x154bf2765a84d89f39812f59a7562e3eaf7166b6",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "message",
+          "type": "string"
+        }
+      ],
+      "name": "receiveMessage",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lastMessage",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "sender",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "filePath": "honours-project-1740876966641/Carbon-Credits-Verification-with-Blockchain-main/contracts/alert.sol",
+  "pinnedAt": 1751340366804
+}

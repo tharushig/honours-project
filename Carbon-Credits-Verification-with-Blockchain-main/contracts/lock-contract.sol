@@ -69,47 +69,47 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         );
         req._add(
             "urlProjectName",
-            "https://a34b-101-115-19-166.ngrok-free.app/data"
+            "https://tnywkhvak3.execute-api.ap-southeast-2.amazonaws.com/default/honours"
         );
         req._add("pathProjectName", "projectName");
         req._add(
             "urlLocation",
-            "https://a34b-101-115-19-166.ngrok-free.app/data"
+            "https://tnywkhvak3.execute-api.ap-southeast-2.amazonaws.com/default/honours"
         );
         req._add("pathLocation", "location");
         req._add(
             "urlHash",
-            "https://a34b-101-115-19-166.ngrok-free.app/data"
+            "https://tnywkhvak3.execute-api.ap-southeast-2.amazonaws.com/default/honours"
         );
         req._add("pathHash", "hash");
         req._add(
             "urlExpectedReductions",
-            "https://a34b-101-115-19-166.ngrok-free.app/data"
+            "https://tnywkhvak3.execute-api.ap-southeast-2.amazonaws.com/default/honours"
         );
         req._add("pathExpectedReductions", "expectedReductions");
         req._add(
             "urlMethodology",
-            "https://a34b-101-115-19-166.ngrok-free.app/data"
+            "https://tnywkhvak3.execute-api.ap-southeast-2.amazonaws.com/default/honours"
         );
         req._add("pathMethodology", "methodology");
         req._add(
             "urlProjectStartDate",
-            "https://a34b-101-115-19-166.ngrok-free.app/data"
+            "https://tnywkhvak3.execute-api.ap-southeast-2.amazonaws.com/default/honours"
         );
         req._add("pathProjectStartDate", "projectStartDate");
         req._add(
             "urlValidationDate",
-            "https://a34b-101-115-19-166.ngrok-free.app/data"
+            "https://tnywkhvak3.execute-api.ap-southeast-2.amazonaws.com/default/honours"
         );
         req._add("pathValidationDate", "validationDate");
         req._add(
             "urlVerificationDate",
-            "https://a34b-101-115-19-166.ngrok-free.app/data"
+            "https://tnywkhvak3.execute-api.ap-southeast-2.amazonaws.com/default/honours"
         );
         req._add("pathVerificationDate", "verificationDate");
         req._add(
             "urlIssuedCredits",
-            "https://a34b-101-115-19-166.ngrok-free.app/data"
+            "https://tnywkhvak3.execute-api.ap-southeast-2.amazonaws.com/default/honours"
         );
         req._add("pathIssuedCredits", "issuedCredits");
         _sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
@@ -245,24 +245,24 @@ contract Lock {
     }
 
     // Checks data before and after
-    function checkUnchangedData (bool time) public {
-        if (time == true) {
-            if (monitoring == true) {
-                dataBefore = apiConsumer.full();
-            }
-            else {
-                dataBefore = "unchanged";
-            }
-        }
-        else {
-            if (monitoring == true) {
-                dataAfter = apiConsumer.full();
-            }
-            else {
-                dataAfter = "unchanged";
-            }
-        }
-    }
+    // function checkUnchangedData (bool time) public {
+    //     if (time == true) {
+    //         if (monitoring == true) {
+    //             dataBefore = apiConsumer.full();
+    //         }
+    //         else {
+    //             dataBefore = "unchanged";
+    //         }
+    //     }
+    //     else {
+    //         if (monitoring == true) {
+    //             dataAfter = apiConsumer.full();
+    //         }
+    //         else {
+    //             dataAfter = "unchanged";
+    //         }
+    //     }
+    // }
 
     // Gets the project state value
     function getProjectState(uint val) pure  public  returns (projectState) {
@@ -345,7 +345,7 @@ contract Lock {
         if (_proState == projectState.APPROVED || _proState == projectState.REJECTED) {
             if (address(this).balance >= 3000) {
                 if (checkVerifiers() == true) {
-                    checkUnchangedData(true);
+                    // checkUnchangedData(true);
                     distributePay(projects[msg.sender], proponents[msg.sender]);
                 }
                 else {
@@ -367,7 +367,7 @@ contract Lock {
     // Releases deposit based on performance
     function distributePay(Project memory proj, Proponents memory prop) public payable {
         (uint depProp, uint depVerr) = calculateDeposit(prop.repScore);
-        checkUnchangedData(false);
+        // checkUnchangedData(false);
         if (proj.proState == projectState.APPROVED) {
             emit Deposit("into approved", 1);
             // paying the proponent
@@ -377,21 +377,21 @@ contract Lock {
             prop.repScore += 1;
 
             //check that the verifiers have done their job by using oracles
-            if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
+            // if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
                 //paying the verifiers
-                returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
-            }
+            returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
+            returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
+            returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
+            // }
         }
         else if (proj.proState == projectState.REJECTED) {
             //check that the verifiers have done their job by using oracles
-            if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
+            // if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
                 //paying the verifiers
-                returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
-            }
+            returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
+            returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
+            returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
+            // }
             // adjusting the reputation score
             prop.repScore -= 1;
         }
