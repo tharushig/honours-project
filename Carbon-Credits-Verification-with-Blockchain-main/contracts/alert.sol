@@ -22,18 +22,14 @@ Flow execution:
 contract AlertMonitor {
     Lock public lock;
 
-    event Message(string);
-
     VRFD20 public vrf;
-
-    event SendAlert(address addr, string message);
 
     mapping(address => string) public messages;
 
     function deployLock() public {
         lock = new Lock();
+        lock.isMonitoring(0x1047b2c86dA02c525734B932a519a38686AE7550);
         lock.deploy();
-        lock.isMonitoring(true);
         lock.newProp();
     }
 
@@ -54,19 +50,10 @@ contract AlertMonitor {
     }
 
     receive() external payable {
-        require(address(lock) != address(0), "Lock contract not deployed yet."); 
 
         (bool success, ) = address(lock).call{value: address(this).balance}(""); 
         require(success, "Failed to send Ether to Lock.");
 
-    }
-
-    function getBalanceLock() public view returns (uint256) {
-        return address(lock).balance;
-    }
-
-    function getBalanceAlert() public view returns (uint256) {
-        return address(this).balance;
     }
 
     function sendMessage(address recipientAddress) public {
@@ -75,27 +62,6 @@ contract AlertMonitor {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // // string memory message = string.concat("It's time for your monitoring ");
-    //         // sendMessage(0xE1B55cE31Bf80BA829c8b4eA219Ad1e80B83b700,message);
-    //         deployLock();
-    //         //who do I send the second message to? Is it to all the verifiers? Or just to verifiers
-        
-
 
 
 

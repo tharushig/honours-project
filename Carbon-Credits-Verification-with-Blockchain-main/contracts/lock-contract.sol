@@ -221,17 +221,17 @@ contract Lock {
     function addVerifier(address verifier, bool resp, string memory message) public {
         Response memory resp0 = Response({verifier : payable (verifier), response:resp, reason : message});
         verifiers.push(resp0);
-        Response memory resp1 = Response({verifier : payable (0x090fab679bbea10C247209cD6A22A0aC7d9a4829), response:false, reason : "number 1"});
+        Response memory resp1 = Response({verifier : payable (0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), response:false, reason : "number 1"});
         verifiers.push(resp1);
-        Response memory resp2 = Response({verifier : payable (0x84030698cb02D41796503b43a36f61F25422FFF5), response:true, reason : "number 2"});
+        Response memory resp2 = Response({verifier : payable (0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), response:true, reason : "number 2"});
         verifiers.push(resp2);
-        Response memory resp3 = Response({verifier : payable (0x65d24ea35566891CB99ddA55213a4E76c39B806E), response:true, reason : "number 3"});
+        Response memory resp3 = Response({verifier : payable (0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), response:true, reason : "number 3"});
         verifiers.push(resp3);
-        Response memory resp4 = Response({verifier : payable (0x090fab679bbea10C247209cD6A22A0aC7d9a4829), response:false, reason : "number 4"});
+        Response memory resp4 = Response({verifier : payable (0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), response:false, reason : "number 4"});
         verifiers.push(resp4);
-        Response memory resp5 = Response({verifier : payable (0x84030698cb02D41796503b43a36f61F25422FFF5), response:true, reason : "number 5"});
+        Response memory resp5 = Response({verifier : payable (0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), response:true, reason : "number 5"});
         verifiers.push(resp5);
-        Response memory resp6 = Response({verifier : payable (0x65d24ea35566891CB99ddA55213a4E76c39B806E), response:true, reason : "number 6"});
+        Response memory resp6 = Response({verifier : payable (0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4), response:true, reason : "number 6"});
         verifiers.push(resp6);
         vrf.requestRandom();
     }
@@ -254,29 +254,29 @@ contract Lock {
     }
 
     // Checks if lock is deployed during alert contract
-    function isMonitoring (bool check) public {
-        monitoring = check;
+    function isMonitoring (address opNode) public {
+        monitoring = true;
+        apiConsumer.requestEthereumPrice(opNode, "95edfc2ee2724e1db6db0eecf74d2669");
     }
 
     // Checks data before and after
-    // function checkUnchangedData (bool time) public {
-    //     if (time == true) {
-    //         if (monitoring == true) {
-    //             dataBefore = apiConsumer.full();
-    //         }
-    //         else {
-    //             dataBefore = "unchanged";
-    //         }
-    //     }
-    //     else {
-    //         if (monitoring == true) {
-    //             dataAfter = apiConsumer.full();
-    //         }
-    //         else {
-    //             dataAfter = "unchanged";
-    //         }
-    //     }
-    // }
+    function checkUnchangedData () public {
+        if (monitoring == true) {
+            // if (monitoring == true) {
+            dataBefore = apiConsumer.full();
+            // }
+            // else {
+            // }
+        }
+        // else {
+        //     // if (monitoring == true) {
+        //     dataBefore = apiConsumer.full();
+        //     // }
+        //     // else {
+        //     // }
+        // }
+        dataAfter = dataBefore;
+    }
 
     // Gets the project state value
     function getProjectState(uint val) pure  public  returns (projectState) {
@@ -313,7 +313,7 @@ contract Lock {
     function newProp() public  {
         Proponents storage p = proponents[msg.sender];
         p.name="Sam";
-        p.propAddr = payable(0xF3447C8a17761E8E5233fE5a50AC72ceCA387559);
+        p.propAddr = payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4);
         p.repScore = 7;
         p.balance= 1;
     }
@@ -321,21 +321,23 @@ contract Lock {
     // Creates new project
     function newProject() public {
         // require(address(apiConsumer) != address(0), "Deploy APIConsumer first!");
-        getNum();
+        // getNum();
+        vrf.s_randomWords(0);
         Project storage p = projects[msg.sender];
+    
         p.projectId=1234567890;
-        p.proponent=payable(0xF3447C8a17761E8E5233fE5a50AC72ceCA387559);
+        p.proponent=payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4);
         p.projectDocs="";
         p.startDate=1;
         p.creditingPeriod=5*24*60*60;
-        p.location="";
-        p.removalGHG=8739.90 * (1 ether);
+        p.location="location";
+        p.removalGHG=8739;
         p.projectType="";
         p.methodology="";
         randomiseVerifiers(msg.sender);
         p.proState=projectState.VERIFICATION;
         p.issueCredit=true;
-        // uint req = uint(apiConsumer.requestData(1));
+        dataBefore = string(abi.encodePacked("location", "8739", "methodology", "true"));    
     }
 
    // Checks if verifiers approved the project
@@ -359,7 +361,6 @@ contract Lock {
         if (_proState == projectState.APPROVED || _proState == projectState.REJECTED) {
             if (address(this).balance >= 3000) {
                 if (checkVerifiers() == true) {
-                    // checkUnchangedData(true);
                     distributePay(projects[msg.sender], proponents[msg.sender]);
                 }
                 else {
@@ -381,7 +382,7 @@ contract Lock {
     // Releases deposit based on performance
     function distributePay(Project memory proj, Proponents memory prop) public payable {
         (uint depProp, uint depVerr) = calculateDeposit(prop.repScore);
-        // checkUnchangedData(false);
+        checkUnchangedData();
         if (proj.proState == projectState.APPROVED) {
             emit Deposit("into approved", 1);
             // paying the proponent
@@ -391,21 +392,21 @@ contract Lock {
             prop.repScore += 1;
 
             //check that the verifiers have done their job by using oracles
-            // if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
+            if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
                 //paying the verifiers
-            returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
-            returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
-            returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
-            // }
+                returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
+                returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
+                returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
+            }
         }
         else if (proj.proState == projectState.REJECTED) {
             //check that the verifiers have done their job by using oracles
-            // if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
+            if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
                 //paying the verifiers
-            returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
-            returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
-            returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
-            // }
+                returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
+                returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
+                returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
+            }
             // adjusting the reputation score
             prop.repScore -= 1;
         }

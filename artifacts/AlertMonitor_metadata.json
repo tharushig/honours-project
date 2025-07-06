@@ -6,38 +6,6 @@
 	"output": {
 		"abi": [
 			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					}
-				],
-				"name": "Message",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "addr",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "message",
-						"type": "string"
-					}
-				],
-				"name": "SendAlert",
-				"type": "event"
-			},
-			{
 				"inputs": [],
 				"name": "addVerifier",
 				"outputs": [],
@@ -56,32 +24,6 @@
 				"name": "getAPI",
 				"outputs": [],
 				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "getBalanceAlert",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "getBalanceLock",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -183,7 +125,7 @@
 		},
 		"optimizer": {
 			"enabled": true,
-			"runs": 20
+			"runs": 1
 		},
 		"remappings": []
 	},
@@ -421,19 +363,19 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/alert.sol": {
-			"keccak256": "0xd67faa86d979f6d0a1f2eaf3970a580bc243c8da62197927104ca25b189e2509",
+			"keccak256": "0x4d9eec516118c4716fe6fe811f7ea6c1704950bf5125ee3484090baf8f1fd6f4",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://f50f55715478399041633f9388a3146e08c0925598fa81479df3c761273ead05",
-				"dweb:/ipfs/Qmb23mhVM2niBiDc6C8ZBFpbg99qYomAWHuhy1zADGMahT"
+				"bzz-raw://a65c57234e6d4de7c7f203515102fa9c5fa9bd13167cafa2df35fb5142f5ba73",
+				"dweb:/ipfs/QmTTneH3fDQCM55s6wboLBEjokSpgWdYnRbeKLjcBRjucG"
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": {
-			"keccak256": "0x549e0a9e91c41bf8c3eec8362f50a4bee6cfb146cb077180f4a646048d6fdb5c",
+			"keccak256": "0xab72ea11af7f321f6147a8e22f782761833528c2dc5f51e961e765eca4bb5642",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://cf80ad8acfc16b430404216a52ce53d5a6b69c17999c3b5b40a6b1d1020f0e89",
-				"dweb:/ipfs/QmcWjJ2EtofLsvRw8LCAMzrymKxt7ouyfosZ1krFcdQPyL"
+				"bzz-raw://5b609eca619f90b5948f3895776df5a4137f2626250cfdd2de978298d1768a9c",
+				"dweb:/ipfs/QmXxNZNSooBUywqnJWMrZqyZmZ7hDSCS5mNwL1s4fH6yta"
 			]
 		}
 	},
