@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/utils/Strings.sol";
+// import "@openzeppelin/contracts/utils/Strings.sol";
 import "Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol";
 
 
@@ -13,7 +13,8 @@ Flow execution:
     - Send >3000 to the alert contract from sender
     - getAPI()
     - Add vrf address to the vrf subscription manager
-    - AddVerifier() -> monitor on vrf sub manager and don't continue unti fulfillment is complete
+    - fund apiConsumer
+    - activateOracles() -> monitor on vrf sub manager and don't continue unti fulfillment is complete
     - simulateExistingProject()
     - returnDeposits()
 */
@@ -23,21 +24,25 @@ contract AlertMonitor {
     Lock public lock;
 
     VRFD20 public vrf;
+    APIConsumer public apiConsumer;
+    // string[] message;
+    
 
     mapping(address => string) public messages;
 
     function deployLock() public {
         lock = new Lock();
-        lock.isMonitoring(0x1047b2c86dA02c525734B932a519a38686AE7550);
         lock.deploy();
         lock.newProp();
     }
 
     function getAPI() public {
         vrf = lock.vrf();
+        apiConsumer = lock.apiConsumer();
     }
 
-    function addVerifier() public {
+    function activateOracles() public {
+        lock.isMonitoring(0x1047b2c86dA02c525734B932a519a38686AE7550);
         lock.addVerifier(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4, true, "testAlert");
     }
 
@@ -50,14 +55,14 @@ contract AlertMonitor {
     }
 
     receive() external payable {
-
         (bool success, ) = address(lock).call{value: address(this).balance}(""); 
-        require(success, "Failed to send Ether to Lock.");
+        // require(success, "Failed to send Ether to Lock.");
 
     }
 
     function sendMessage(address recipientAddress) public {
         messages[recipientAddress] = "Your project is scheduled to undergo its annual monitoring.";
+        // message.push("Your project is scheduled to undergo its annual monitoring.");
         deployLock();
     }
 
@@ -105,15 +110,3 @@ contract SenderMoney {
         emit LogMessage("Sender received money back", address(this));
     }
 }
-
-
-// //contract Sender2 {
-// //     // Function to send message to another contract
-// //     function sendMessage(address recipientAddress, string memory message) external {
-// //         // Interface-style call to the recipient's function
-// //         (bool success, ) = recipientAddress.call(
-// //             abi.encodeWithSignature("receiveMessage(string)", message)
-// //         );
-// //         require(success, "Message delivery failed!");
-// //     }
-// // }

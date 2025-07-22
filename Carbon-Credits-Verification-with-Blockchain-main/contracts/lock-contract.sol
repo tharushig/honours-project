@@ -262,19 +262,8 @@ contract Lock {
     // Checks data before and after
     function checkUnchangedData () public {
         if (monitoring == true) {
-            // if (monitoring == true) {
             dataBefore = apiConsumer.full();
-            // }
-            // else {
-            // }
         }
-        // else {
-        //     // if (monitoring == true) {
-        //     dataBefore = apiConsumer.full();
-        //     // }
-        //     // else {
-        //     // }
-        // }
         dataAfter = dataBefore;
     }
 
@@ -320,12 +309,12 @@ contract Lock {
 
     // Creates new project
     function newProject() public {
-        // require(address(apiConsumer) != address(0), "Deploy APIConsumer first!");
+        require(address(apiConsumer) != address(0), "Deploy APIConsumer first!");
         // getNum();
         vrf.s_randomWords(0);
         Project storage p = projects[msg.sender];
     
-        p.projectId=1234567890;
+        p.projectId=0;
         p.proponent=payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4);
         p.projectDocs="";
         p.startDate=1;
@@ -379,8 +368,11 @@ contract Lock {
         
     }
 
+    
+
     // Releases deposit based on performance
     function distributePay(Project memory proj, Proponents memory prop) public payable {
+        // require(address(this).balance >= 3000, "Not enough money distributed");
         (uint depProp, uint depVerr) = calculateDeposit(prop.repScore);
         checkUnchangedData();
         if (proj.proState == projectState.APPROVED) {
@@ -392,23 +384,30 @@ contract Lock {
             prop.repScore += 1;
 
             //check that the verifiers have done their job by using oracles
-            if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
-                //paying the verifiers
-                returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
-            }
+            // if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
+            //     //paying the verifiers
+            //     returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
+            //     returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
+            //     returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
+            // }
         }
         else if (proj.proState == projectState.REJECTED) {
             //check that the verifiers have done their job by using oracles
-            if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
-                //paying the verifiers
-                returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
-                returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
-            }
+            // if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
+            //     //paying the verifiers
+            //     returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
+            //     returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
+            //     returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
+            // }
             // adjusting the reputation score
             prop.repScore -= 1;
+        }
+
+        if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
+                //paying the verifiers
+            returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
+            returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
+            returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
         }
 
         //ensuring repScore remains valid
@@ -422,7 +421,7 @@ contract Lock {
     // Handles payment transfers
     function returnDeposit(address payable addr, uint deposit) public payable {
         (bool sent, bytes memory data) = addr.call{value: deposit}("");
-        require(sent, "Failed to send deposit to proponent");
+        // require(sent, "Failed to send deposit to proponent");
     }
 
     // Checks and adjusts if repScore is out of bounds
@@ -469,16 +468,31 @@ contract Sender {
     }
 }
 
-contract RecievePayment {
-    event LogMessage(string message, address addr);
 
-    receive() external payable {
-        testReturn();
+
+contract MonitorContract {
+    struct Monitoring {
+        uint256 proj_id;
+        uint256 expected_reductions;
+        bool passed;
+        string notes;
     }
 
-    function testReturn () public {
-        emit LogMessage("Test return is executed", address(this));
-    } 
+    event MonitoringSubmitted(
+        uint256 proj_id,
+        uint256 expected_reductions,
+        bool passed,
+        string notes
+    );
+
+    function submitMonitoring(
+        uint256 proj_id,
+        uint256 expected_reductions,
+        bool passed,
+        string calldata notes
+    ) public {
+        emit MonitoringSubmitted(proj_id, expected_reductions, passed, notes);
+    }
 }
 
 
@@ -486,45 +500,41 @@ contract RecievePayment {
 
 
 
-// contract APIConsumer is ChainlinkClient, ConfirmedOwner {
-//     using Chainlink for Chainlink.Request;
 
-//     uint256 public volume;
-//     bytes32 private jobId;
-//     uint256 private fee;
 
-//     event RequestVolume(bytes32 indexed requestId, uint256 volume);
 
-//     constructor() ConfirmedOwner(msg.sender) {
-//         _setChainlinkToken(0x779877A7B0D9E8603169DdbD7836e478b4624789);
-//         _setChainlinkOracle(0x6090149792dAAeE9D1D568c9f9a6F6B46AA29eFD);
-//         jobId = "ca98366cc7314957b8c012c72f05aeeb";
-//         fee = (1 * LINK_DIVISIBILITY) / 10;
-//     }
 
-//     event Data(string);
-//     event Result(string, uint);
+// function distributePay(address prop) public payable {
+    //     require(address(this).balance >= 3000, "Not enough money distributed");
+    //     (uint depProp, uint depVerr) = calculateDeposit(proponents[prop].repScore);
+    //     checkUnchangedData();
+    //     // approved case
+    //     if (checkVerifiers()) {
+    //         emit Deposit("into approved", 1);
+    //         // paying the proponent
+    //         returnDeposit(proponents[prop].propAddr, depProp);
 
-//     function requestData(uint projectId) public returns (bytes32 requestId) {
-//         Chainlink.Request memory req = _buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
-//         req._add(
-//             "get",
-//             "https://a34b-101-115-19-166.ngrok-free.app/check"
-//         );
-//         req._add("path", "num");
-//         int256 timesAmount = 1;
-//         req._addInt("times", timesAmount);
-//         emit Result("Made the get request", projectId);
-//         return _sendChainlinkRequest(req, fee);
-//     }
+    //         //adjusting the reputation score
+    //         proponents[prop].repScore += 1;
 
-//     function fulfill(bytes32 _requestId, uint256 _volume) public recordChainlinkFulfillment(_requestId) {
-//         emit RequestVolume(_requestId, _volume);
-//         volume = _volume;
-//     }
+    //     }
+    //     else {
+    //         // adjusting the reputation score
+    //         proponents[prop].repScore -= 1;
+    //     }
+        
+    //     //check that the verifiers have done their job by using oracles
+    //     if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
+    //         //paying the verifiers
+    //         returnDeposit(projects[prop].verifyResponse[0].verifier, (depVerr+2000)/3);
+    //         returnDeposit(projects[prop].verifyResponse[1].verifier, (depVerr+2000)/3);
+    //         returnDeposit(projects[prop].verifyResponse[2].verifier, (depVerr+2000)/3);
+    //     }
 
-//     function withdrawLink() public onlyOwner {
-//         LinkTokenInterface link = LinkTokenInterface(_chainlinkTokenAddress());
-//         require(link.transfer(msg.sender, link.balanceOf(address(this))),"Unable to transfer");
-//     }
-// }
+    //     //ensuring repScore remains valid
+    //     checkRepScore(proponents[prop].propAddr);
+    //     //burn address for the rest of the balance
+    //     returnDeposit(payable(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4), address(this).balance);
+    //     emit Deposit("repScore", prop.balance);
+    //     emit Deposit("msg.sender Balance", msg.sender.balance);
+    // }

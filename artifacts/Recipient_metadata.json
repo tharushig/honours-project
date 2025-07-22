@@ -67,7 +67,7 @@
 		},
 		"optimizer": {
 			"enabled": true,
-			"runs": 1
+			"runs": 10
 		},
 		"remappings": []
 	},
@@ -305,19 +305,19 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/alert.sol": {
-			"keccak256": "0x4d9eec516118c4716fe6fe811f7ea6c1704950bf5125ee3484090baf8f1fd6f4",
+			"keccak256": "0xc2593eebb49dc2e7f49dbfe6f05527059ef5f0fbde5a1c8b7a91ae81cdd946a1",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://a65c57234e6d4de7c7f203515102fa9c5fa9bd13167cafa2df35fb5142f5ba73",
-				"dweb:/ipfs/QmTTneH3fDQCM55s6wboLBEjokSpgWdYnRbeKLjcBRjucG"
+				"bzz-raw://e0572f4f9c5c7a4f6a9a43c4f61033ff7bb59765f45f70e54035604f686aeeb7",
+				"dweb:/ipfs/QmcQ4PbSh9ap5xmYszFYAVfKvbUjDX1P3t69eJ171hw5ZJ"
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": {
-			"keccak256": "0xab72ea11af7f321f6147a8e22f782761833528c2dc5f51e961e765eca4bb5642",
+			"keccak256": "0x0d6626111b7070db71a01840f500ac895ac1287a48d6046f45431ab3a8636add",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5b609eca619f90b5948f3895776df5a4137f2626250cfdd2de978298d1768a9c",
-				"dweb:/ipfs/QmXxNZNSooBUywqnJWMrZqyZmZ7hDSCS5mNwL1s4fH6yta"
+				"bzz-raw://8529244f6c724f194a1c65b3be2a0c1fb26adb7c85aebc9296f78acfc15bdd55",
+				"dweb:/ipfs/QmTNdk1TQVxxySdP6LK9uiFtAzZuGj9JFxbcVTj524HU9B"
 			]
 		}
 	},
