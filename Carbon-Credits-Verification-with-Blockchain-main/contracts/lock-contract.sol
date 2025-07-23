@@ -158,7 +158,7 @@ Flow Execution:
     - AddVerifier() -> wait until fulfillment is complete on vrf sub manager
     - newProp()
     - newProject()
-    - changeProjectState()
+    - changeProjectState(4)
 
 */
 
@@ -185,6 +185,8 @@ contract Lock {
     string public dataAfter;
     uint public vrfNum;
     bool monitoring;
+
+    VDRSend public vdr;
 
     enum projectState {SUBMITTED, VERIFICATION, VALIDATION, APPROVED, REJECTED}
 
@@ -215,6 +217,7 @@ contract Lock {
     function deploy() public {
         apiConsumer = new APIConsumer();
         vrf = new VRFD20(76195552127779171116519451722131943009323967143011630297663303055390353341770);
+        vdr = new VDRSend();
     }
 
     // Adds list of authorised verifiers
@@ -382,29 +385,15 @@ contract Lock {
 
             //adjusting the reputation score
             prop.repScore += 1;
-
-            //check that the verifiers have done their job by using oracles
-            // if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
-            //     //paying the verifiers
-            //     returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
-            //     returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
-            //     returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
-            // }
         }
         else if (proj.proState == projectState.REJECTED) {
-            //check that the verifiers have done their job by using oracles
-            // if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
-            //     //paying the verifiers
-            //     returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
-            //     returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
-            //     returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
-            // }
             // adjusting the reputation score
             prop.repScore -= 1;
         }
 
+        //check that the verifiers have done their job by using oracles
         if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
-                //paying the verifiers
+            //paying the verifiers
             returnDeposit(proj.verifyResponse[0].verifier, (depVerr+2000)/3);
             returnDeposit(proj.verifyResponse[1].verifier, (depVerr+2000)/3);
             returnDeposit(proj.verifyResponse[2].verifier, (depVerr+2000)/3);
@@ -414,6 +403,12 @@ contract Lock {
         checkRepScore(prop.propAddr);
         //burn address for the rest of the balance
         returnDeposit(payable(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4), address(this).balance);
+        if (monitoring) {
+            vdr.submitMonitoring(proj.projectId, proj.methodology, checkVerifiers(), "verifier message");
+        }
+        else {
+            vdr.submitProjectInfo(proj.projectId, "proj", proj.methodology, proj.removalGHG, proj.location, proj.startDate, 21052000, 22052000, 1234923);
+        }
         emit Deposit("repScore", prop.balance);
         emit Deposit("msg.sender Balance", msg.sender.balance);
     }
@@ -470,28 +465,66 @@ contract Sender {
 
 
 
-contract MonitorContract {
+contract VDRSend {
     struct Monitoring {
         uint256 proj_id;
-        uint256 expected_reductions;
+        string methodology;
         bool passed;
         string notes;
     }
 
     event MonitoringSubmitted(
         uint256 proj_id,
-        uint256 expected_reductions,
+        string methodology,
         bool passed,
         string notes
     );
 
+    struct ProjectInfo {
+        uint256 id;
+        string name;
+        string methodology;
+        uint256 expected_reductions;
+        string location;
+        uint256 start_date;
+        uint256 verification_date;
+        uint256 validation_date;
+        uint256 issued_credits;
+    }
+
+    event ProjectInfoSubmitted (
+        uint256 id,
+        string name,
+        string methodology,
+        uint256 expected_reductions,
+        string location,
+        uint256 start_date,
+        uint256 verification_date,
+        uint256 validation_date,
+        uint256 issued_credits
+    );
+
     function submitMonitoring(
         uint256 proj_id,
-        uint256 expected_reductions,
+        string calldata methodology,
         bool passed,
         string calldata notes
     ) public {
-        emit MonitoringSubmitted(proj_id, expected_reductions, passed, notes);
+        emit MonitoringSubmitted(proj_id, methodology, passed, notes);
+    }
+
+    function submitProjectInfo(
+        uint256 id,
+        string calldata name,
+        string calldata methodology,
+        uint256 expected_reductions,
+        string calldata location,
+        uint256 start_date,
+        uint256 verification_date,
+        uint256 validation_date,
+        uint256 issued_credits
+    ) public {
+        emit ProjectInfoSubmitted (id,name,methodology,expected_reductions,location,start_date,verification_date,validation_date,issued_credits);
     }
 }
 

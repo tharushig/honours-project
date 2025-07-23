@@ -37,6 +37,67 @@
 				"type": "event"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "methodology",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "expected_reductions",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "location",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "start_date",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "verification_date",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "validation_date",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "issued_credits",
+						"type": "uint256"
+					}
+				],
+				"name": "ProjectInfoSubmitted",
+				"type": "event"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -60,6 +121,59 @@
 					}
 				],
 				"name": "submitMonitoring",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "methodology",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "expected_reductions",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "location",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "start_date",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "verification_date",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "validation_date",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "issued_credits",
+						"type": "uint256"
+					}
+				],
+				"name": "submitProjectInfo",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -325,11 +439,11 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": {
-			"keccak256": "0x0d6626111b7070db71a01840f500ac895ac1287a48d6046f45431ab3a8636add",
+			"keccak256": "0x817ba2526c941be3c659e9d4d5f0186c29ecc6a384c0ec4dee703adaebd1c61c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://8529244f6c724f194a1c65b3be2a0c1fb26adb7c85aebc9296f78acfc15bdd55",
-				"dweb:/ipfs/QmTNdk1TQVxxySdP6LK9uiFtAzZuGj9JFxbcVTj524HU9B"
+				"bzz-raw://41527420f469ac7507f6628e094dfbbb193bf0880b0c9b42f8d18abe7a794c35",
+				"dweb:/ipfs/QmV37HquPCuZYzU6Dyv7pRJhU7PGqRDGZ4dTdeLAHX38hE"
 			]
 		}
 	},
