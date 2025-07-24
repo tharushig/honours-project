@@ -25,10 +25,11 @@ contract AlertMonitor {
 
     VRFD20 public vrf;
     APIConsumer public apiConsumer;
+    VDRSend public vdr;
     // string[] message;
     
 
-    mapping(address => string) public messages;
+    // mapping(address => string) public messages;
 
     function deployLock() public {
         lock = new Lock();
@@ -39,6 +40,7 @@ contract AlertMonitor {
     function getAPI() public {
         vrf = lock.vrf();
         apiConsumer = lock.apiConsumer();
+        vdr = lock.vdr();
     }
 
     function activateOracles() public {
@@ -61,7 +63,7 @@ contract AlertMonitor {
     }
 
     function sendMessage(address recipientAddress) public {
-        messages[recipientAddress] = "Your project is scheduled to undergo its annual monitoring.";
+        // messages[recipientAddress] = "Your project is scheduled to undergo its annual monitoring.";
         // message.push("Your project is scheduled to undergo its annual monitoring.");
         deployLock();
     }

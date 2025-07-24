@@ -184,7 +184,7 @@ contract Lock {
     string public dataBefore;
     string public dataAfter;
     uint public vrfNum;
-    bool monitoring;
+    bool public monitoring;
 
     VDRSend public vdr;
 
@@ -207,6 +207,7 @@ contract Lock {
 
     mapping (address => Project) public projects;
     mapping (address => Proponents) public proponents;
+    mapping (address => string) public messages;
 
     event Deposit(string, uint amount);
     event Balance(string);
@@ -218,6 +219,10 @@ contract Lock {
         apiConsumer = new APIConsumer();
         vrf = new VRFD20(76195552127779171116519451722131943009323967143011630297663303055390353341770);
         vdr = new VDRSend();
+    }
+
+    constructor (bool check) {
+        monitoring = check;
     }
 
     // Adds list of authorised verifiers
@@ -257,9 +262,11 @@ contract Lock {
     }
 
     // Checks if lock is deployed during alert contract
-    function isMonitoring (address opNode) public {
-        monitoring = true;
-        apiConsumer.requestEthereumPrice(opNode, "95edfc2ee2724e1db6db0eecf74d2669");
+    function activateOracle (address opNode) public {
+        if (monitoring) {
+            messages[msg.sender] = "Your project is scheduled to undergo its annual monitoring.";
+            apiConsumer.requestEthereumPrice(opNode, "95edfc2ee2724e1db6db0eecf74d2669");
+        }
     }
 
     // Checks data before and after
@@ -317,15 +324,15 @@ contract Lock {
         vrf.s_randomWords(0);
         Project storage p = projects[msg.sender];
     
-        p.projectId=0;
+        p.projectId=6;
         p.proponent=payable(0xCbd38adA2d31C7071e041fC8F8C1DA9Df9c76dD4);
         p.projectDocs="";
         p.startDate=1;
         p.creditingPeriod=5*24*60*60;
-        p.location="location";
+        p.location="Austria";
         p.removalGHG=8739;
         p.projectType="";
-        p.methodology="";
+        p.methodology="VM003";
         randomiseVerifiers(msg.sender);
         p.proState=projectState.VERIFICATION;
         p.issueCredit=true;

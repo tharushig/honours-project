@@ -6,6 +6,17 @@
 	"output": {
 		"abi": [
 			{
+				"inputs": [
+					{
+						"internalType": "bool",
+						"name": "check",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
 				"anonymous": false,
 				"inputs": [
 					{
@@ -91,6 +102,19 @@
 				],
 				"name": "checkResp",
 				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "opNode",
+						"type": "address"
+					}
+				],
+				"name": "activateOracle",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
 			},
 			{
 				"inputs": [
@@ -410,13 +434,32 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "opNode",
+						"name": "",
 						"type": "address"
 					}
 				],
-				"name": "isMonitoring",
-				"outputs": [],
-				"stateMutability": "nonpayable",
+				"name": "messages",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "monitoring",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -662,7 +705,7 @@
 		},
 		"optimizer": {
 			"enabled": true,
-			"runs": 10
+			"runs": 0
 		},
 		"remappings": []
 	},
@@ -900,11 +943,11 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": {
-			"keccak256": "0xed5dc47746839a50a50f99a8defe3974661dc85d3b07b50f31dfb0e30b767cbe",
+			"keccak256": "0xb15f78ee63c156bcee9b3199583938ff029516cd9b14351e57909f294aa78a64",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://fc4b92115b55af9cbe06d36341842c5c5ca4b04e5acf96ed7b05b34c0afb7743",
-				"dweb:/ipfs/QmbZgC3JbagwPFVa2viMSm8rqgVkSSZKz6upuqAgdpKB9H"
+				"bzz-raw://277032a022a276ce4567b47573da7ef432755849085e705c5d84d6fd77659d6a",
+				"dweb:/ipfs/QmXpg9719sTZk91EEtVYF7wAuFMjj8TY1ndLHT6Mc4Zavg"
 			]
 		}
 	},
