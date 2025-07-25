@@ -277,25 +277,25 @@ contract Lock {
         dataAfter = dataBefore;
     }
 
-    // Gets the project state value
-    function getProjectState(uint val) pure  public  returns (projectState) {
-        if (val == 4) {
-            return projectState.APPROVED;
-        }
-        else if (val == 3) {
-            return projectState.REJECTED;
-        }
-        else if (val == 2) {
-            return projectState.VALIDATION;
-        }
-        else if (val == 1) {
-            return projectState.VERIFICATION;
-        }
-        else {
-            return projectState.SUBMITTED;
-        }
+    // // Gets the project state value
+    // function getProjectState(uint val) pure  public  returns (projectState) {
+    //     if (val == 4) {
+    //         return projectState.APPROVED;
+    //     }
+    //     else if (val == 3) {
+    //         return projectState.REJECTED;
+    //     }
+    //     else if (val == 2) {
+    //         return projectState.VALIDATION;
+    //     }
+    //     else if (val == 1) {
+    //         return projectState.VERIFICATION;
+    //     }
+    //     else {
+    //         return projectState.SUBMITTED;
+    //     }
 
-    }
+    // }
 
     // Calculates the deposit based off repScore
     function calculateDeposit(uint256 _repScore) public returns(uint,uint) {

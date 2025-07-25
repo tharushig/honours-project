@@ -71,7 +71,7 @@
 		},
 		"optimizer": {
 			"enabled": true,
-			"runs": 0
+			"runs": 10
 		},
 		"remappings": []
 	},
@@ -309,11 +309,11 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": {
-			"keccak256": "0xb15f78ee63c156bcee9b3199583938ff029516cd9b14351e57909f294aa78a64",
+			"keccak256": "0x2a35923d60998e309da99cd11b0ebde57ab60478fe36b1bd03ac14e51a1037c2",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://277032a022a276ce4567b47573da7ef432755849085e705c5d84d6fd77659d6a",
-				"dweb:/ipfs/QmXpg9719sTZk91EEtVYF7wAuFMjj8TY1ndLHT6Mc4Zavg"
+				"bzz-raw://bb54be9c65f9606ae4ae7875737c603bac62924e65be04e880eca9477aa42da2",
+				"dweb:/ipfs/QmUBi8LfLSRtauoKRQBjgL8z6b1ei3nRvBwkpWtmNh7A2P"
 			]
 		}
 	},
