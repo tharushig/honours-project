@@ -677,7 +677,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": "Lock"
+			"Blockchain-Solution/contracts/lock-contract.sol": "Lock"
 		},
 		"evmVersion": "prague",
 		"libraries": {},
@@ -923,12 +923,12 @@
 				"dweb:/ipfs/QmVUSvooZKEdEdap619tcJjTLcAuH6QBdZqAzWwnAXZAWJ"
 			]
 		},
-		"Carbon-Credits-Verification-with-Blockchain-main/contracts/lock-contract.sol": {
-			"keccak256": "0xda036b07e9e0701a007e9b6db3660f081afb75e0be10961c082e62477c112507",
+		"Blockchain-Solution/contracts/lock-contract.sol": {
+			"keccak256": "0x58e664aa236f1e3cf51f6a41650ebe1f0675bb8a9f20cf61823c0b4d58544b31",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://41a085bfeed01a5a8edfe5937e5238feb63096e1973c28857e07be292d9b5323",
-				"dweb:/ipfs/QmNZxhWiBywrUoT7hgNCgx7MSbcUEAbf1hHQusR1fpmuRx"
+				"bzz-raw://32188f4ec786c7c1fde386613d2306d55fa670ce7b113a439f07d541ed424356",
+				"dweb:/ipfs/QmVGDoARcsU6ViMiuD7CatPJ247UPkABDFsBvugdiFTEvx"
 			]
 		}
 	},
