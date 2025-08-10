@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import {VRFConsumerBaseV2Plus} from "@chainlink/contracts@1.4.0/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
 import {VRFV2PlusClient} from "@chainlink/contracts@1.4.0/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 
-// VRF Contract for randomness
+// VRF Contract
 contract VRFD20 is VRFConsumerBaseV2Plus {
     uint256 private constant ROLL_IN_PROGRESS = 42;
     uint256 public s_subscriptionId;
@@ -47,8 +47,8 @@ contract VRFD20 is VRFConsumerBaseV2Plus {
 
 }
 
-// API Contract to get data
-contract APIConsumer is ChainlinkClient, ConfirmedOwner {
+// Oracle Contract to get data
+contract OracleConsumer is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
     uint256 private constant ORACLE_PAYMENT = (1 * LINK_DIVISIBILITY) / 10; // 0.1 * 10**18
     string public hash;
@@ -179,7 +179,7 @@ contract Lock {
         bool issueCredit;
     }
 
-    APIConsumer public apiConsumer;
+    OracleConsumer public oracleConsumer;
     VRFD20 public vrf;
     string public dataBefore;
     string public dataAfter;
@@ -216,7 +216,7 @@ contract Lock {
 
     // Deploys chainlink contracts
     function deploy() public {
-        apiConsumer = new APIConsumer();
+        oracleConsumer = new OracleConsumer();
         vrf = new VRFD20(76195552127779171116519451722131943009323967143011630297663303055390353341770);
         vdr = new VDRSend();
     }
@@ -252,6 +252,7 @@ contract Lock {
         emit checkResp(projects[msg.sender].verifyResponse, "from project");
     }
 
+    // Gets list of verifiers for the project
     function getVerifiers() view public returns (Response[] memory) {
         return projects[msg.sender].verifyResponse;
     }
@@ -261,45 +262,24 @@ contract Lock {
         vrfNum = vrf.s_randomWords(0);
     }
 
-    // Checks if lock is deployed during alert contract
+    // Checks if lock is in monitoring phase
     function activateOracle (address opNode) public {
         if (monitoring) {
             messages[msg.sender] = "Your project is scheduled to undergo its annual monitoring.";
-            apiConsumer.requestEthereumPrice(opNode, "95edfc2ee2724e1db6db0eecf74d2669");
+            oracleConsumer.requestEthereumPrice(opNode, "95edfc2ee2724e1db6db0eecf74d2669");
         }
     }
 
     // Checks data before and after
     function checkUnchangedData () public {
         if (monitoring == true) {
-            dataBefore = apiConsumer.full();
+            dataBefore = oracleConsumer.full();
         }
         dataAfter = dataBefore;
     }
 
-    // // Gets the project state value
-    // function getProjectState(uint val) pure  public  returns (projectState) {
-    //     if (val == 4) {
-    //         return projectState.APPROVED;
-    //     }
-    //     else if (val == 3) {
-    //         return projectState.REJECTED;
-    //     }
-    //     else if (val == 2) {
-    //         return projectState.VALIDATION;
-    //     }
-    //     else if (val == 1) {
-    //         return projectState.VERIFICATION;
-    //     }
-    //     else {
-    //         return projectState.SUBMITTED;
-    //     }
-
-    // }
-
     // Calculates the deposit based off repScore
     function calculateDeposit(uint256 _repScore) public returns(uint,uint) {
-        //Let's say fee is $2000
         // Let's make the deposit $1000 (prop deposit + verra deposit)
         uint propDep = 1000 / (_repScore*5);
         uint verrDep = 1000 - propDep;
@@ -319,7 +299,7 @@ contract Lock {
 
     // Creates new project
     function newProject() public {
-        require(address(apiConsumer) != address(0), "Deploy APIConsumer first!");
+        require(address(oracleConsumer) != address(0), "Deploy OracleConsumer first!");
         // getNum();
         vrf.s_randomWords(0);
         Project storage p = projects[msg.sender];
@@ -373,7 +353,6 @@ contract Lock {
     }
 
     //Allows the contract recieve payments
-    //Making the assumption that everyone pays deposit at the beginning, before any verification
     receive() external payable { 
         
     }
@@ -438,25 +417,10 @@ contract Lock {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Mock sender contract to send ETH to lock contract
 contract Sender {
     event LogMessage(string, address);
     function sendEther(address payable receiverAddress) public payable {
-        // Sending Ether to the receiver contract
-        //Need to do the same for verra but not sure how
         (bool success, ) = receiverAddress.call{value: msg.value}("");
         require(success, "Transfer failed.");
     }
@@ -471,7 +435,7 @@ contract Sender {
 }
 
 
-
+// Contract to send information to off-chain python listener
 contract VDRSend {
     struct Monitoring {
         uint256 proj_id;
@@ -511,6 +475,7 @@ contract VDRSend {
         uint256 issued_credits
     );
 
+    // send monitoring details
     function submitMonitoring(
         uint256 proj_id,
         string calldata methodology,
@@ -520,6 +485,7 @@ contract VDRSend {
         emit MonitoringSubmitted(proj_id, methodology, passed, notes);
     }
 
+    // send project details
     function submitProjectInfo(
         uint256 id,
         string calldata name,
@@ -535,46 +501,3 @@ contract VDRSend {
     }
 }
 
-
-
-
-
-
-
-
-
-
-// function distributePay(address prop) public payable {
-    //     require(address(this).balance >= 3000, "Not enough money distributed");
-    //     (uint depProp, uint depVerr) = calculateDeposit(proponents[prop].repScore);
-    //     checkUnchangedData();
-    //     // approved case
-    //     if (checkVerifiers()) {
-    //         emit Deposit("into approved", 1);
-    //         // paying the proponent
-    //         returnDeposit(proponents[prop].propAddr, depProp);
-
-    //         //adjusting the reputation score
-    //         proponents[prop].repScore += 1;
-
-    //     }
-    //     else {
-    //         // adjusting the reputation score
-    //         proponents[prop].repScore -= 1;
-    //     }
-        
-    //     //check that the verifiers have done their job by using oracles
-    //     if (keccak256(abi.encodePacked(dataAfter)) == keccak256(abi.encodePacked(dataBefore))) {
-    //         //paying the verifiers
-    //         returnDeposit(projects[prop].verifyResponse[0].verifier, (depVerr+2000)/3);
-    //         returnDeposit(projects[prop].verifyResponse[1].verifier, (depVerr+2000)/3);
-    //         returnDeposit(projects[prop].verifyResponse[2].verifier, (depVerr+2000)/3);
-    //     }
-
-    //     //ensuring repScore remains valid
-    //     checkRepScore(proponents[prop].propAddr);
-    //     //burn address for the rest of the balance
-    //     returnDeposit(payable(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4), address(this).balance);
-    //     emit Deposit("repScore", prop.balance);
-    //     emit Deposit("msg.sender Balance", msg.sender.balance);
-    // }

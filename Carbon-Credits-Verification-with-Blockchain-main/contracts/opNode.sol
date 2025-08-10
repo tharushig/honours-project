@@ -14,7 +14,7 @@ import {SafeCast} from "@openzeppelin/contracts/utils/math/SafeCast.sol";
 
 import {Operator} from "@chainlink/contracts@1.3.0/src/v0.8/operatorforwarder/Operator.sol";
 
-
+// From Chainlink github: This is the operator oracle node
 // @title The Chainlink Operator contract
 // @notice Node operators can deploy this contract to fulfill requests sent to them
 // solhint-disable gas-custom-errors

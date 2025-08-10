@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.29+commit.ab55807c"
+		"version": "0.8.30+commit.73712a01"
 	},
 	"language": "Solidity",
 	"output": {
@@ -52,7 +52,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "deployAPI",
+				"name": "deploy",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -112,14 +112,14 @@
 		"compilationTarget": {
 			"Carbon-Credits-Verification-with-Blockchain-main/contracts/prove.sol": "Prove"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "prague",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
 			"enabled": true,
-			"runs": 10
+			"runs": 7
 		},
 		"remappings": []
 	},
@@ -349,11 +349,11 @@
 			]
 		},
 		"Carbon-Credits-Verification-with-Blockchain-main/contracts/prove.sol": {
-			"keccak256": "0x3ebd7b154a9174efff97f16d01c599d1b22f182ba89df2f5f2b19ca3107423f6",
+			"keccak256": "0xc00ec160ce97f78dbb42f54ac22efa902649c9b3b51fdf30000cb1f2b21085c6",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://55c93359e77c8acec7fbb988fffd7c43de6ec26e918bd4c8759c72ad5bd0c527",
-				"dweb:/ipfs/QmcbVPvsHfrq2t429v2Di6cgJ3Whjgonb9fARWvJNzT7Tq"
+				"bzz-raw://4c29da7874b0d85451d12fc568acaa6b795f0aeecb56015c74869e00a3a56ac7",
+				"dweb:/ipfs/QmY71SLfowGtvc6TBqmwMAe9qHfe1rpucCSubdKTV3mDWi"
 			]
 		}
 	},

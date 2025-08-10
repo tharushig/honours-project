@@ -6,7 +6,7 @@ import ".deps/npm/@chainlink/contracts@1.3.0/src/v0.8/shared/access/ConfirmedOwn
 import "@chainlink/contracts@1.3.0/src/v0.8/shared/interfaces/LinkTokenInterface.sol";
 import {Operator} from "@chainlink/contracts@1.3.0/src/v0.8/operatorforwarder/Operator.sol";
 
-
+// Oracle contract
 contract OperatorConsumer is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
     uint256 private constant ORACLE_PAYMENT = (1 * LINK_DIVISIBILITY) / 10; // 0.1 * 10**18
@@ -20,14 +20,14 @@ contract OperatorConsumer is ChainlinkClient, ConfirmedOwner {
     //jobid: 95edfc2ee2724e1db6db0eecf74d2669
 
     
-    function requestEthereumPrice(
+    function getProjectDetails(
         address _oracle,
         string memory _jobId
     ) public onlyOwner {
         Chainlink.Request memory req = _buildChainlinkRequest(
             stringToBytes32(_jobId),
             address(this),
-            this.fulfillEthereumPrice.selector
+            this.fulfillRequest.selector
         );
         req._add(
             "urlProjectName",
@@ -77,7 +77,7 @@ contract OperatorConsumer is ChainlinkClient, ConfirmedOwner {
         _sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
     }
 
-    function fulfillEthereumPrice(
+    function fulfillRequest(
         bytes32 _requestId,
         string memory _projectName,
         string memory _location,
@@ -122,20 +122,24 @@ Flow Execution:
 
 */
 
+// Main Prove Contract
 contract Prove {
     OperatorConsumer public opConsumer;
     event HashResult(bytes32);
     event Data(string);
     
     
-    function deployAPI() public {
+    // Deploys oracle contract
+    function deploy() public {
         opConsumer = new OperatorConsumer();
     }
 
+    // Gets project details from oracle
     function getProjDetails(address opNode) public {
-        opConsumer.requestEthereumPrice(opNode, "95edfc2ee2724e1db6db0eecf74d2669");
+        opConsumer.getProjectDetails(opNode, "95edfc2ee2724e1db6db0eecf74d2669");
     }
 
+    // Compares hash values
     function hashCheck() public view returns (bool) {
         bytes32 calcHash = keccak256(abi.encodePacked(opConsumer.full()));
         string memory calcHashStr = bytes32ToString(calcHash);
@@ -143,6 +147,7 @@ contract Prove {
     }
 
 
+    // Converts bytes to string 
     function bytes32ToString(bytes32 data) public pure returns (string memory) {
         bytes memory alphabet = "0123456789abcdef";
         bytes memory str = new bytes(64); // Each byte corresponds to 2 hex characters
