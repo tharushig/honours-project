@@ -1,0 +1,198 @@
+{
+	"compiler": {
+		"version": "0.8.29+commit.ab55807c"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Bal",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_repScore",
+						"type": "uint256"
+					}
+				],
+				"name": "calculateDeposit",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "proponents",
+				"outputs": [
+					{
+						"internalType": "address payable",
+						"name": "propAddr",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "repScore",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "balance",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "addr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "deposit",
+						"type": "uint256"
+					}
+				],
+				"name": "returnDeposit",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "proponent",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "valResult",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "verResult",
+						"type": "bool"
+					},
+					{
+						"internalType": "address payable",
+						"name": "verra",
+						"type": "address"
+					}
+				],
+				"name": "sendResult",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "proponent",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "valResult",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "verResult",
+						"type": "bool"
+					}
+				],
+				"name": "sendResulttest",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Carbon-Credits-Verification-with-Blockchain-main/contracts/test.sol": "Test"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Carbon-Credits-Verification-with-Blockchain-main/contracts/test.sol": {
+			"keccak256": "0x8f6044d78e4cb193c8719f1413e1915005f86786d3e89a63b50c6a56d6b4b24d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://819558c7b93cb8b4a295f5fa089bb88815c44483cbe15dbe5cd746c3008082a5",
+				"dweb:/ipfs/QmbrJBLWZy7qT9uqqBjPxxL9C6cSgg5HMmrE2L3WffgCak"
+			]
+		}
+	},
+	"version": 1
+}
