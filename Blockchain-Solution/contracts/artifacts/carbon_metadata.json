@@ -1,0 +1,1083 @@
+{
+	"compiler": {
+		"version": "0.8.29+commit.ab55807c"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "methodology",
+						"type": "string"
+					}
+				],
+				"name": "addMethodology",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_email",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_location",
+						"type": "string"
+					}
+				],
+				"name": "addProponent",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "apiConsumer",
+				"outputs": [
+					{
+						"internalType": "contract APIConsumer",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					}
+				],
+				"name": "assignVerifiersValidate",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					}
+				],
+				"name": "assignVerifiersValidateTest",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					}
+				],
+				"name": "assignVerifiersVerify",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					}
+				],
+				"name": "assignVerifiersVerifyTest",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_addr",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_methodologies",
+						"type": "string"
+					}
+				],
+				"name": "authoriseVerifiers",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					}
+				],
+				"name": "calculateEmissions",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "kWh",
+						"type": "uint256"
+					}
+				],
+				"name": "calculateEmissionsTest",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "deployAPI",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint64",
+						"name": "subscriptionId",
+						"type": "uint64"
+					},
+					{
+						"internalType": "address",
+						"name": "vrfCoordinator",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "keyHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "deployVRF",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					}
+				],
+				"name": "getProject",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "projectId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "proponent",
+								"type": "address"
+							},
+							{
+								"internalType": "string",
+								"name": "projectDocs",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "startDate",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "creditingPeriod",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "location",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "removalGHG",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "projectType",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "methodology",
+								"type": "string"
+							},
+							{
+								"components": [
+									{
+										"internalType": "address",
+										"name": "verifier",
+										"type": "address"
+									},
+									{
+										"internalType": "bool",
+										"name": "response",
+										"type": "bool"
+									},
+									{
+										"internalType": "string",
+										"name": "reason",
+										"type": "string"
+									}
+								],
+								"internalType": "struct carbon.Response[]",
+								"name": "validateResponse",
+								"type": "tuple[]"
+							},
+							{
+								"components": [
+									{
+										"internalType": "address",
+										"name": "verifier",
+										"type": "address"
+									},
+									{
+										"internalType": "bool",
+										"name": "response",
+										"type": "bool"
+									},
+									{
+										"internalType": "string",
+										"name": "reason",
+										"type": "string"
+									}
+								],
+								"internalType": "struct carbon.Response[]",
+								"name": "verifyResponse",
+								"type": "tuple[]"
+							},
+							{
+								"internalType": "enum carbon.projectState",
+								"name": "proState",
+								"type": "uint8"
+							},
+							{
+								"internalType": "bool",
+								"name": "issueCredit",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct carbon.Project",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					}
+				],
+				"name": "getProponent",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "proponent",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "projectId",
+								"type": "uint256"
+							},
+							{
+								"components": [
+									{
+										"internalType": "bytes32",
+										"name": "docHash",
+										"type": "bytes32"
+									},
+									{
+										"internalType": "bool",
+										"name": "verified",
+										"type": "bool"
+									}
+								],
+								"internalType": "struct carbon.Documents",
+								"name": "docs",
+								"type": "tuple"
+							},
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "email",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "location",
+								"type": "string"
+							}
+						],
+						"internalType": "struct carbon.Proponent",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					}
+				],
+				"name": "getVerifier",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "docHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "postDocs",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "projectValidators",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "projectVerifiers",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "projects",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "proponent",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "projectDocs",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startDate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "creditingPeriod",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "location",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "removalGHG",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "projectType",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "methodology",
+						"type": "string"
+					},
+					{
+						"internalType": "enum carbon.projectState",
+						"name": "proState",
+						"type": "uint8"
+					},
+					{
+						"internalType": "bool",
+						"name": "issueCredit",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "proponents",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "proponent",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "docHash",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "bool",
+								"name": "verified",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct carbon.Documents",
+						"name": "docs",
+						"type": "tuple"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "email",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "location",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "methodology",
+						"type": "string"
+					}
+				],
+				"name": "removeMethodology",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					}
+				],
+				"name": "removeVerifiers",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_projectDocs",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_startDate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_creditingPeriod",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_location",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_removalGHG",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_projectType",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_methodology",
+						"type": "string"
+					}
+				],
+				"name": "submitProject",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "response",
+						"type": "bool"
+					},
+					{
+						"internalType": "string",
+						"name": "reason",
+						"type": "string"
+					}
+				],
+				"name": "validateProject",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "verifierList",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					}
+				],
+				"name": "verifierResponseValidate",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "x",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					}
+				],
+				"name": "verifierResponseVerify",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "x",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "verifiers",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "proponent",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "response",
+						"type": "bool"
+					}
+				],
+				"name": "verifyDocs",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "projectId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "response",
+						"type": "bool"
+					},
+					{
+						"internalType": "string",
+						"name": "reason",
+						"type": "string"
+					}
+				],
+				"name": "verifyProject",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "vrfContract",
+				"outputs": [
+					{
+						"internalType": "contract vrf",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Carbon-Credits-Verification-with-Blockchain-main/contracts/carbon.sol": "carbon"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 20
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@chainlink/contracts/src/v0.8/Chainlink.sol": {
+			"keccak256": "0x2df682bf5004b304fa9a578c0a4df29974aec44bd18ded16d04ea8f89b9fac88",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://26608ae87993d14abfa3ca427c7cb5be73be73075e2b133a71143fa204566e9d",
+				"dweb:/ipfs/QmZgdd8nGyjBuyuPc1NrodZP13XmPz29FBvvfQKUprAZ3N"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/ChainlinkClient.sol": {
+			"keccak256": "0xa722cbe61d1e05d78ed23470c739634d5d3766ed6d34cb07c2c53d3932dd75ab",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b5e726f6c841f318c156ae69d82841e21271c8f4599dfaf52bda216811edf243",
+				"dweb:/ipfs/QmZhGXNfQRp2TueMaufdYPt9xB5XJavJx7CDeF1siMbfui"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/interfaces/ChainlinkRequestInterface.sol": {
+			"keccak256": "0xcb9cfd97e83ad76f0b9f38c31939faa40b9b49b17c8294efb7e01f0bc47641c5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://04a41f7aec071113910291bcafe211431546f2e2049ee52218d193f1d30b242d",
+				"dweb:/ipfs/QmNhJbhLqXfuZi2hpQhEKYnmqiGqDJ4RGCTY2S41ovYT2u"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/interfaces/ENSInterface.sol": {
+			"keccak256": "0xf7913635d15f748b9b328b5115279c32577cff9baba0f1642789fc55979fd7e5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ab832d89326415d9df81ae380cc1ff6ee1414fabb36fc70f70d9a4f238e04ba3",
+				"dweb:/ipfs/QmcfmZLyPnp5dbn1EPsprYrmmx3hGqqVPNx7jU6UijBvy7"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/interfaces/OperatorInterface.sol": {
+			"keccak256": "0x282943d0bd9bf79f31c90629c94c380d120ce0c2c428a0dd3d9751012fb52613",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6d7c594cf9cfdb63151e566561b86347eee4099b581cb3296e7a13f13e1c789a",
+				"dweb:/ipfs/QmPXYqqHEf2fKSrL5G3ZtZEeBam21ETCxeFJBzXSeoDZnV"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/interfaces/OracleInterface.sol": {
+			"keccak256": "0xcbd2a3ae1098118beedcaedca5721ab9847c3a21e6482a71829e4ce8357b30b6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9d4a2109588d1b4c355e1622405f8760b0c164f2292a6cc2672c898472108989",
+				"dweb:/ipfs/QmbcfMMfQNaK5exe1bSkCRtJyiqjhLRVFK2itJfcWwsZsp"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/interfaces/PointerInterface.sol": {
+			"keccak256": "0x015785842b3c4902c97fbd091ed7c0cdf08126e64bd0a4bfe357edeb7e43a243",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d9a1d29c67533cf21b7b8b17eb67d6f692169367658abf2273b7168ac3646e63",
+				"dweb:/ipfs/QmdHhDgiacNWjvNi8eqErbunVXL2mR2Stcof2uvefvZ7qE"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol": {
+			"keccak256": "0x83e471e40ec7483f7cdac3490e9198e539a10015d7d3e76e7ab6ba899acb2bb5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ac9f293255ca802b3fdf767a6558aa15e9e02b4014da3c019361f34d1620a0b8",
+				"dweb:/ipfs/QmVJF4hNUADyFm4GVrEVd3srq4YKMmvk3roBnRkGk3VFGo"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol": {
+			"keccak256": "0xdcb0e9135ddbe71ee27ba99fa06656960c66c964cf2ecb29696da1c1427d9861",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f914a1b638300e82d8f5a020a4195235599afebab4ef1e10c6992f3c90e7df3e",
+				"dweb:/ipfs/Qmf2MbuVB16qbCGii3U5cjcBvVjAHHYzKp9voJa2eDch9B"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol": {
+			"keccak256": "0x2422a055657a87e98be61f8f31abb1824ec50fd0f73949f4e3c6ac877efb6da8",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://fde3b9ac3a4c42ea43e2f92b037d32ab20e30818471c6e20d2590147a6c2958a",
+				"dweb:/ipfs/QmQ2ohQP4GnhPUsiWCvCfb1dsoGYDdxSap3dxtnYTV4rmT"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol": {
+			"keccak256": "0x885de72b7b4e4f1bf8ba817a3f2bcc37fd9022d342c4ce76782151c30122d767",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://17c636625a5d29a140612db496d2cca9fb4b48c673adb0fd7b3957d287e75921",
+				"dweb:/ipfs/QmNoBX8TY424bdQWyQC7y3kpKfgxyWxhLw7KEhhEEoBN9q"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/shared/interfaces/LinkTokenInterface.sol": {
+			"keccak256": "0xd3643595b0a46f577fff806736cbe4e3f81707c93fb1693a8a7960466e5cd321",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f7cccfc386f9cdb9037db66dd85a31347af8b733f39a18cbc12dbf1f5812d02d",
+				"dweb:/ipfs/QmcE3Hef9XLSbthiS3DKQFF1ZpYDZsPLHwW1DY5iUGAfcd"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/vendor/BufferChainlink.sol": {
+			"keccak256": "0x89388a631c16ad993e4d76d8d19e08ae98e1397f5dfdfb5f9c0b91015df4cf5d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://88cb96caa94128821daec5478c0f3646902007b81a0604b2e3ab79ea2f40b056",
+				"dweb:/ipfs/Qmd1nu9CpgouPmukNQpZThxKgPZAayXxqBfwbDVHfMrCrF"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/vendor/CBORChainlink.sol": {
+			"keccak256": "0x08bda450d4dc1d17147fd29810234d35e2c437f1a99be733cfa7ee516db08a48",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d47a793b314afe9cd82fcf05ffe4ebbfa5504c2decc83004edbb3b2069d4f0c3",
+				"dweb:/ipfs/Qmd2YLSiS8xeeXqireh6qJgTTwVY2VscZpv2cQBU8gkEJT"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/vendor/ENSResolver.sol": {
+			"keccak256": "0x606bda5f3fa27be4cf04f6636dda443b7787b56e87ade988fca2e51d2147613d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://63b50d13ca97c4dd62738398bb2e423a36563b827b0af94c0e7a47cf0d4a2e6b",
+				"dweb:/ipfs/QmXjy7BmtnPeCLMaMnGGnsxDPGxohfDpYzP8PnUoh6gBGa"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol": {
+			"keccak256": "0x5a502a5ce16796565815b295bb2d18a0d26d6f23621f733918c971047c6091d7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f03385e076f6c2ad534bffe7c655cf259242e0f133f0ebfd56f914c0dde4a3f4",
+				"dweb:/ipfs/QmWkQVSoAoRu1LXQTfDeic9QESjQkjT4G5Kt1VptTaxQDP"
+			]
+		},
+		"@openzeppelin/contracts/utils/Panic.sol": {
+			"keccak256": "0xf7fe324703a64fc51702311dc51562d5cb1497734f074e4f483bfb6717572d7a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c6a5ff4f9fd8649b7ee20800b7fa387d3465bd77cf20c2d1068cd5c98e1ed57a",
+				"dweb:/ipfs/QmVSaVJf9FXFhdYEYeCEfjMVHrxDh5qL4CGkxdMWpQCrqG"
+			]
+		},
+		"@openzeppelin/contracts/utils/Strings.sol": {
+			"keccak256": "0x44f87e91783e88415bde66f1a63f6c7f0076f2d511548820407d5c95643ac56c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://13a51bc2b23827744dcf5bad10c69e72528cf015a6fe48c93632cdb2c0eb1251",
+				"dweb:/ipfs/QmZwPA47Yqgje1qtkdEFEja8ntTahMStYzKf5q3JRnaR7d"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/Math.sol": {
+			"keccak256": "0xa04a9526c2bed40a52f05347038e4f2aa347044782323b27f9ac5315cc2c5545",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8c10bc1fdaf70fc6cc8ec4e36e6e74c4c7a87fe2a0aaf128888a1952581f344c",
+				"dweb:/ipfs/QmWhMXzFYrccf9MTGc3abN2AQHVm8hVmRTQTxgSeqFX7dL"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/SafeCast.sol": {
+			"keccak256": "0x195533c86d0ef72bcc06456a4f66a9b941f38eb403739b00f21fd7c1abd1ae54",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b1d578337048cad08c1c03041cca5978eff5428aa130c781b271ad9e5566e1f8",
+				"dweb:/ipfs/QmPFKL2r9CBsMwmUqqdcFPfHZB2qcs9g1HDrPxzWSxomvy"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/SignedMath.sol": {
+			"keccak256": "0xb1970fac7b64e6c09611e6691791e848d5e3fe410fa5899e7df2e0afd77a99e3",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://db5fbb3dddd8b7047465b62575d96231ba8a2774d37fb4737fbf23340fabbb03",
+				"dweb:/ipfs/QmVUSvooZKEdEdap619tcJjTLcAuH6QBdZqAzWwnAXZAWJ"
+			]
+		},
+		"Carbon-Credits-Verification-with-Blockchain-main/contracts/carbon.sol": {
+			"keccak256": "0x861fe4fc18a4352e5622a96088bfa071765a5a801d9ca9380a5b06c7a1e28677",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6b886ff9079b650c3e76f5eeaff968f1de816b1656ff0ed9a46e9d24bdb8b289",
+				"dweb:/ipfs/QmbzML7TGoTVqAFkdnhMfAqK8mf6mVhmnumM3fj1AbYa2D"
+			]
+		}
+	},
+	"version": 1
+}
