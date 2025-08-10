@@ -58,14 +58,14 @@ contract OracleConsumer is ChainlinkClient, ConfirmedOwner {
         _setChainlinkToken(0x779877A7B0D9E8603169DdbD7836e478b4624789);
     }
 
-    function requestEthereumPrice(
+    function getMonitoringDetails(
         address _oracle,
         string memory _jobId
     ) public onlyOwner {
         Chainlink.Request memory req = _buildChainlinkRequest(
             stringToBytes32(_jobId),
             address(this),
-            this.fulfillEthereumPrice.selector
+            this.fulfillMonitoringDetails.selector
         );
         req._add(
             "urlProjectName",
@@ -115,7 +115,7 @@ contract OracleConsumer is ChainlinkClient, ConfirmedOwner {
         _sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
     }
 
-    function fulfillEthereumPrice(
+    function fulfillMonitoringDetails(
         bytes32 _requestId,
         string memory _projectName,
         string memory _location,
@@ -266,7 +266,7 @@ contract Lock {
     function activateOracle (address opNode) public {
         if (monitoring) {
             messages[msg.sender] = "Your project is scheduled to undergo its annual monitoring.";
-            oracleConsumer.requestEthereumPrice(opNode, "95edfc2ee2724e1db6db0eecf74d2669");
+            oracleConsumer.getMonitoringDetails(opNode, "95edfc2ee2724e1db6db0eecf74d2669");
         }
     }
 
